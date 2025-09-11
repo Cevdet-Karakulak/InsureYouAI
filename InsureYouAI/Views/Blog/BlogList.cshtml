@@ -1,0 +1,79 @@
+﻿@{
+    Layout = null;
+}
+
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+@await Component.InvokeAsync("_DefaultHeadComponentPartial")
+
+
+<body>
+    <!-- header -->
+    <header class="header-area header-three">
+
+        @await Component.InvokeAsync("_DefaultHeaderComponentPartial")
+
+        @await Component.InvokeAsync("_DefaultHeaderContactComponentPartial")
+
+        @await Component.InvokeAsync("_DefaultNavbarComponentPartial")
+
+    </header>
+    <!-- header-end -->
+    <!-- offcanvas-area -->
+    @await Component.InvokeAsync("_DefaultMobileMenuComponentPartial")
+
+    <!-- offcanvas-end -->
+    <!-- main-area -->
+    <main>
+
+
+        <!-- /search-popup -->
+        <!-- breadcrumb-area -->
+        @await Component.InvokeAsync("_BlogListBreadCrumbComponentPartial")
+
+
+        <!-- breadcrumb-area-end -->
+        <!-- inner-blog -->
+        <section class="inner-blog pt-120 pb-120">
+            <div class="container">
+                <div class="row">
+                    @await Component.InvokeAsync("_BlogListAllBlogsComponentPartial")
+
+
+
+                    <div class="col-sm-12 col-md-12 col-lg-4">
+                        <aside class="sidebar-widget">
+                            @await Html.PartialAsync("~/Views/Blog/GetBlog.cshtml")
+
+                            @await Component.InvokeAsync("_BlogListSocialMediaComponentPartial")
+
+                            @await Component.InvokeAsync("_BlogListCategoriesComponentPartial")
+
+                            @await Component.InvokeAsync("_BlogListLast3RecentBlogComponentPartial")
+
+                            @await Component.InvokeAsync("_BlogListTagComponentPartial")
+
+
+
+
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- inner-blog-end -->
+        <!-- newslater-area -->
+        @await Html.PartialAsync("~/Views/Default/SubscribeEmail.cshtml")
+        <!-- newslater-aread-end -->
+    </main>
+    <!-- main-area-end -->
+    <!-- footer -->
+    @await Component.InvokeAsync("_DefaultFooterComponentPartial")
+
+    @await Component.InvokeAsync("_DefaultScriptsComponentPartial")
+    <!-- footer-end -->
+    <!-- JS here -->
+
+</body>
+</html>

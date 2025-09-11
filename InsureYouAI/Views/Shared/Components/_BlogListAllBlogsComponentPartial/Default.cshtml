@@ -1,0 +1,35 @@
+﻿@model List<Article>
+
+<div class="col-lg-8">
+    @foreach (var item in Model)
+    {
+        <div class="bsingle__post mb-50">
+            <div class="bsingle__post-thumb">
+                <img src="@item.CoverImageUrl" alt="">
+            </div>
+            <div class="bsingle__content">
+                <div class="meta-info">
+                    <ul>
+                        <li><i class="fal fa-user"></i>@item.AppUser.Name @item.AppUser.Surname</li>
+                        <li><i class="fal fa-calendar-alt"></i>  @item.CreatedDate.ToString("dd-MMM-yyyy")</li>
+                        <li><i class="fal fa-car"></i>  Kategori: @item.Category.CategoryName</li>
+                        <li><i class="fal fa-comment"></i>  0 Yorum</li>
+                    </ul>
+                </div>
+                <h2>
+                    <a href="/Blog/BlogDetail/@item.ArticleId">
+                        @item.Title
+                    </a>
+                </h2>
+                <p>@item.Content.Substring(0,300)...</p>
+                <div class="blog__btn">
+                    <a href="/Blog/BlogDetail/@item.ArticleId" class="btn">Devamını Oku</a>
+                </div>
+            </div>
+        </div>
+    }
+
+
+
+
+</div>

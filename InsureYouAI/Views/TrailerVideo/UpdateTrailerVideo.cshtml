@@ -1,0 +1,28 @@
+﻿@model TrailerVideo
+@{
+    ViewData["Title"] = "UpdateTrailerVideo";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex align-items-center">
+            <h5 class="mb-0">Video Düzenleme Sayfası</h5>
+        </div>
+        <form method="post">
+            <input type="hidden" asp-for="TrailerVideoId" />
+            <label for="Title" class="form-label">Video Başlık</label>
+            <input type="text" class="form-control mb-3" asp-for="Title" />
+            <br />
+            <label for="CoverImageUrl" class="form-label">Kapak Fotoğrafı</label>
+            <input type="text" class="form-control mb-3" asp-for="CoverImageUrl" />
+            <br />
+
+            <label for="VideoUrl" class="form-label">Video youtube embed Url</label>
+            <input type="text" class="form-control mb-3" asp-for="VideoUrl" />
+            <br />
+
+            <button type="submit" class="btn btn-primary">Video Kaydet </button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,138 @@
+﻿@model InsureYouAI.Dtos.CreateUserRegisterDto
+
+@{
+    Layout = null;
+}
+
+<!doctype html>
+<html lang="tr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/snacked/ltr/assets/images/favicon-32x32.png" type="image/png" />
+    <link href="/snacked/ltr/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/snacked/ltr/assets/css/bootstrap-extended.css" rel="stylesheet" />
+    <link href="/snacked/ltr/assets/css/style.css" rel="stylesheet" />
+    <link href="/snacked/ltr/assets/css/icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link href="/snacked/ltr/assets/css/pace.min.css" rel="stylesheet" />
+    <title>Insure You AI Kullanıcı Oluşturma</title>
+</head>
+
+<body class="bg-register">
+
+    <div class="wrapper">
+        <main class="authentication-content mt-5">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12 col-lg-4 mx-auto">
+                        <div class="card shadow rounded-5 overflow-hidden">
+                            <div class="card-body p-4 p-sm-5">
+                                <h5 class="card-title mb-4">Yeni Kullanıcı Kaydı</h5>
+
+                                <form asp-action="CreateUser" asp-controller="Register" method="post" id="registerForm">
+                                    <div class="mb-3">
+                                        <input type="text" asp-for="Name" class="form-control" placeholder="Adınız" />
+                                        <span asp-validation-for="Name" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <input type="text" asp-for="Surname" class="form-control" placeholder="Soyadınız" />
+                                        <span asp-validation-for="Surname" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <input type="text" asp-for="UserName" class="form-control" placeholder="Kullanıcı Adınız" />
+                                        <span asp-validation-for="UserName" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <input type="email" asp-for="Email" class="form-control" placeholder="Email Adresiniz" />
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <input type="password" asp-for="Password" class="form-control" placeholder="Şifreniz" />
+                                        <span asp-validation-for="Password" class="text-danger"></span>
+                                    </div>
+
+                                    <!-- KVKK Checkbox -->
+                                    <div class="form-check mb-3">
+                                        <input type="checkbox" asp-for="TermsAccepted" class="form-check-input" id="termsCheckbox" />
+                                        <label class="form-check-label" for="termsCheckbox">
+                                            Kullanım Şartlarını
+                                            <button type="button" class="btn btn-link p-0 align-baseline" data-bs-toggle="modal" data-bs-target="#kvkkModal">
+                                                okudum
+                                            </button> & kabul ediyorum
+                                        </label>
+                                        <span asp-validation-for="TermsAccepted" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="d-grid mb-3">
+                                        <button type="submit" class="btn btn-warning w-100">Kayıt Ol</button>
+                                    </div>
+
+                                    <p class="text-center">Zaten bir hesabın var mı? <a href="authentication-signin.html">Giriş Yap</a></p>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- KVKK Modal -->
+    <div class="modal fade" id="kvkkModal" tabindex="-1" aria-labelledby="kvkkModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="kvkkModalLabel">Kişisel Verilerin Korunması (KVKK) Metni</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        İşbu metin 6698 sayılı Kişisel Verilerin Korunması Kanunu (“KVKK”) kapsamında,
+                        kişisel verilerinizin işlenmesi, saklanması ve paylaşılması ile ilgili olarak
+                        sizleri bilgilendirmek amacıyla hazırlanmıştır.
+                    </p>
+                    <p>
+                        Kişisel verileriniz, yalnızca yasal yükümlülükler çerçevesinde ve açık rızanız
+                        doğrultusunda işlenecek olup, üçüncü kişilerle paylaşılmayacaktır.
+                    </p>
+                    <p>
+                        Daha detaylı bilgi için <a href="/Kvkk/Detay" target="_blank">KVKK Aydınlatma Metni</a>
+                        sayfamızı ziyaret edebilirsiniz.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/snacked/ltr/assets/js/jquery.min.js"></script>
+    <script src="/snacked/ltr/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.13/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        // Client-side check for TermsAccepted
+        $(document).ready(function () {
+            $("#registerForm").submit(function (e) {
+                if (!$("#termsCheckbox").is(":checked")) {
+                    e.preventDefault();
+                    alert("Kullanım Şartlarını kabul etmelisiniz!");
+                    $("#termsCheckbox").focus();
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

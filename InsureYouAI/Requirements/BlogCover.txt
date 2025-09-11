@@ -1,0 +1,6 @@
+﻿<section class="breadcrumb-area d-flex align-items-center"
+                 style="background-image: url('/defaultimages/coverimages/cover0.png');
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                height: 400px;">
