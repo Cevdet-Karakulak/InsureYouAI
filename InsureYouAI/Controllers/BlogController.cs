@@ -74,7 +74,6 @@ namespace InsureYouAI.Controllers
                         englishText = translateDoc.RootElement[0].GetProperty("translation_text").GetString();
                     }
 
-                    //ViewBag.v = englishText;
 
                     var toxicRequestBody = new
                     {
@@ -116,7 +115,7 @@ namespace InsureYouAI.Controllers
 
             _context.Comments.Add(comment);
             _context.SaveChanges();
-            return RedirectToAction("BlogList");
+            return RedirectToAction("BlogDetail", new { id = comment.ArticleId });
         }
     }
 }

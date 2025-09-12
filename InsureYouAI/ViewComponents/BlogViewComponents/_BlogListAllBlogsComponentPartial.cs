@@ -13,7 +13,12 @@ namespace InsureYouAI.ViewComponents.BlogViewComponents
         }
         public IViewComponentResult Invoke()
         {
-            var values = _context.Articles.Include(x => x.Category).Include(y => y.AppUser).ToList();
+            var values = _context.Articles
+                .Include(x => x.Category)
+                .Include(y => y.AppUser)
+                .Include(z => z.Comments) // 🔥 Yorumları dahil ettik
+                .ToList();
+
             return View(values);
         }
     }
