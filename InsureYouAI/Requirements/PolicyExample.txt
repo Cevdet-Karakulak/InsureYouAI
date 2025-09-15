@@ -1,0 +1,68 @@
+﻿INSERT INTO Policies (PolicyNumber, PolicyType, AppUserId, PremiumAmount, StartDate, EndDate, Status, CreatedDate)
+VALUES
+('TRF-2025-001', 'Trafik', '38a28b4e-45d0-4976-8abd-2c72516d2df4', 2500, '2025-01-01', '2026-01-01', 'Active', GETDATE()),
+('KSK-2025-002', 'Kasko', '42284dcd-932e-4efa-b3b2-6218cb2a7852', 4800, '2025-02-15', '2026-02-15', 'Active', GETDATE()),
+('HLT-2025-003', 'Sağlık', '5990c2bf-aa74-403a-8d76-ef634573ae8d', 5200, '2025-03-01', '2026-03-01', 'Active', GETDATE()),
+('CNT-2025-004', 'Konut', '6e13f340-69e4-428c-81a9-27ea810d86be', 3100, '2025-01-20', '2026-01-20', 'Active', GETDATE()),
+('TRF-2025-005', 'Trafik', '71ec3ad2-4071-4864-8ccb-716342244221', 2700, '2025-02-01', '2026-02-01', 'Active', GETDATE()),
+('HLT-2025-006', 'Sağlık', '9848261f-def9-41d0-932d-73fea3770ab8', 6000, '2025-04-10', '2026-04-10', 'Active', GETDATE()),
+('KSK-2025-007', 'Kasko', 'a0bdca62-a2a9-4de2-bbd5-404141c27eea', 7500, '2025-05-01', '2026-05-01', 'Active', GETDATE()),
+('TRF-2025-008', 'Trafik', 'bd9783bd-1fba-4b54-a1f4-83cc99f39533', 2400, '2025-02-01', '2026-02-01', 'Active', GETDATE()),
+('CNT-2025-009', 'Konut', 'f7510922-a357-4444-ae96-b9dbf16c7e2a', 4200, '2025-03-01', '2026-03-01', 'Active', GETDATE()),
+('HLT-2025-010', 'Sağlık', 'fcfd75f0-a100-4ed4-98a4-bda7fd740453', 5500, '2025-01-01', '2026-01-01', 'Active', GETDATE()),
+
+('TRF-2025-011', 'Trafik', '38a28b4e-45d0-4976-8abd-2c72516d2df4', 2650, '2025-03-01', '2026-03-01', 'Active', GETDATE()),
+('HLT-2025-012', 'Sağlık', '42284dcd-932e-4efa-b3b2-6218cb2a7852', 5800, '2025-04-01', '2026-04-01', 'Active', GETDATE()),
+('KSK-2025-013', 'Kasko', '5990c2bf-aa74-403a-8d76-ef634573ae8d', 7200, '2025-02-01', '2026-02-01', 'Active', GETDATE()),
+('CNT-2025-014', 'Konut', '6e13f340-69e4-428c-81a9-27ea810d86be', 3300, '2025-05-01', '2026-05-01', 'Active', GETDATE()),
+('TRF-2025-015', 'Trafik', '71ec3ad2-4071-4864-8ccb-716342244221', 2900, '2025-03-01', '2026-03-01', 'Active', GETDATE()),
+('HLT-2025-016', 'Sağlık', '9848261f-def9-41d0-932d-73fea3770ab8', 6100, '2025-06-01', '2026-06-01', 'Active', GETDATE()),
+('KSK-2025-017', 'Kasko', 'a0bdca62-a2a9-4de2-bbd5-404141c27eea', 8000, '2025-07-01', '2026-07-01', 'Active', GETDATE()),
+('CNT-2025-018', 'Konut', 'bd9783bd-1fba-4b54-a1f4-83cc99f39533', 4400, '2025-04-01', '2026-04-01', 'Active', GETDATE()),
+('TRF-2025-019', 'Trafik', 'f7510922-a357-4444-ae96-b9dbf16c7e2a', 2600, '2025-05-01', '2026-05-01', 'Active', GETDATE()),
+('HLT-2025-020', 'Sağlık', 'fcfd75f0-a100-4ed4-98a4-bda7fd740453', 5900, '2025-03-01', '2026-03-01', 'Active', GETDATE());
+
+
+
+---------------------------------------------------
+
+INSERT INTO Policies (PolicyNumber, PolicyType, AppUserId, PremiumAmount, StartDate, EndDate, Status, CreatedDate)
+VALUES
+('KSK-2025-021', 'Kasko', '38a28b4e-45d0-4976-8abd-2c72516d2df4', 7700, '2025-06-01', '2026-06-01', 'Active', GETDATE()),
+('HLT-2025-022', 'Sağlık', '42284dcd-932e-4efa-b3b2-6218cb2a7852', 6300, '2025-05-01', '2026-05-01', 'Active', GETDATE()),
+('TRF-2025-023', 'Trafik', '5990c2bf-aa74-403a-8d76-ef634573ae8d', 2800, '2025-07-01', '2026-07-01', 'Active', GETDATE()),
+('CNT-2025-024', 'Konut', '6e13f340-69e4-428c-81a9-27ea810d86be', 3500, '2025-06-15', '2026-06-15', 'Active', GETDATE()),
+('KSK-2025-025', 'Kasko', '71ec3ad2-4071-4864-8ccb-716342244221', 7400, '2025-08-01', '2026-08-01', 'Active', GETDATE()),
+('TRF-2025-026', 'Trafik', '9848261f-def9-41d0-932d-73fea3770ab8', 2550, '2025-09-01', '2026-09-01', 'Active', GETDATE()),
+('HLT-2025-027', 'Sağlık', 'a0bdca62-a2a9-4de2-bbd5-404141c27eea', 6500, '2025-07-10', '2026-07-10', 'Active', GETDATE()),
+('KSK-2025-028', 'Kasko', 'bd9783bd-1fba-4b54-a1f4-83cc99f39533', 8100, '2025-05-15', '2026-05-15', 'Active', GETDATE()),
+('CNT-2025-029', 'Konut', 'f7510922-a357-4444-ae96-b9dbf16c7e2a', 4100, '2025-08-01', '2026-08-01', 'Active', GETDATE()),
+('TRF-2025-030', 'Trafik', 'fcfd75f0-a100-4ed4-98a4-bda7fd740453', 2750, '2025-10-01', '2026-10-01', 'Active', GETDATE()),
+
+('HLT-2025-031', 'Sağlık', '38a28b4e-45d0-4976-8abd-2c72516d2df4', 5700, '2025-06-01', '2026-06-01', 'Active', GETDATE()),
+('KSK-2025-032', 'Kasko', '42284dcd-932e-4efa-b3b2-6218cb2a7852', 7200, '2025-09-01', '2026-09-01', 'Active', GETDATE()),
+('CNT-2025-033', 'Konut', '5990c2bf-aa74-403a-8d76-ef634573ae8d', 3600, '2025-08-01', '2026-08-01', 'Active', GETDATE()),
+('TRF-2025-034', 'Trafik', '6e13f340-69e4-428c-81a9-27ea810d86be', 2600, '2025-11-01', '2026-11-01', 'Active', GETDATE()),
+('HLT-2025-035', 'Sağlık', '71ec3ad2-4071-4864-8ccb-716342244221', 6200, '2025-07-01', '2026-07-01', 'Active', GETDATE()),
+('KSK-2025-036', 'Kasko', '9848261f-def9-41d0-932d-73fea3770ab8', 7900, '2025-10-01', '2026-10-01', 'Active', GETDATE()),
+('TRF-2025-037', 'Trafik', 'a0bdca62-a2a9-4de2-bbd5-404141c27eea', 2850, '2025-12-01', '2026-12-01', 'Active', GETDATE()),
+('CNT-2025-038', 'Konut', 'bd9783bd-1fba-4b54-a1f4-83cc99f39533', 4700, '2025-09-15', '2026-09-15', 'Active', GETDATE()),
+('HLT-2025-039', 'Sağlık', 'f7510922-a357-4444-ae96-b9dbf16c7e2a', 6800, '2025-11-01', '2026-11-01', 'Active', GETDATE()),
+('KSK-2025-040', 'Kasko', 'fcfd75f0-a100-4ed4-98a4-bda7fd740453', 8300, '2025-08-20', '2026-08-20', 'Active', GETDATE());
+
+---------------------------------------------------
+
+INSERT INTO Policies (PolicyNumber, PolicyType, AppUserId, PremiumAmount, StartDate, EndDate, Status, CreatedDate)
+VALUES
+('TRF-2025-041', 'Trafik', '38a28b4e-45d0-4976-8abd-2c72516d2df4', 2950, '2025-09-01', '2026-09-01', 'Active', GETDATE()),
+('HLT-2025-042', 'Sağlık', '42284dcd-932e-4efa-b3b2-6218cb2a7852', 6400, '2025-12-01', '2026-12-01', 'Active', GETDATE()),
+('KSK-2025-043', 'Kasko', '5990c2bf-aa74-403a-8d76-ef634573ae8d', 7600, '2025-11-01', '2026-11-01', 'Active', GETDATE()),
+('CNT-2025-044', 'Konut', '6e13f340-69e4-428c-81a9-27ea810d86be', 3900, '2025-10-01', '2026-10-01', 'Active', GETDATE()),
+('TRF-2025-045', 'Trafik', '71ec3ad2-4071-4864-8ccb-716342244221', 2800, '2025-12-15', '2026-12-15', 'Active', GETDATE()),
+('HLT-2025-046', 'Sağlık', '9848261f-def9-41d0-932d-73fea3770ab8', 7000, '2025-09-01', '2026-09-01', 'Active', GETDATE()),
+('KSK-2025-047', 'Kasko', 'a0bdca62-a2a9-4de2-bbd5-404141c27eea', 8200, '2025-11-20', '2026-11-20', 'Active', GETDATE()),
+('CNT-2025-048', 'Konut', 'bd9783bd-1fba-4b54-a1f4-83cc99f39533', 4500, '2025-12-01', '2026-12-01', 'Active', GETDATE()),
+('TRF-2025-049', 'Trafik', 'f7510922-a357-4444-ae96-b9dbf16c7e2a', 3000, '2025-08-01', '2026-08-01', 'Active', GETDATE()),
+('HLT-2025-050', 'Sağlık', 'fcfd75f0-a100-4ed4-98a4-bda7fd740453', 7200, '2025-10-10', '2026-10-10', 'Active', GETDATE());
+
+--------------------------------------------------------------------

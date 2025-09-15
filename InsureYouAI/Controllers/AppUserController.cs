@@ -149,7 +149,7 @@ Lütfen çıktıyı profesyonel rapor formatında, madde madde ve en sonda 5 mad
             if (user == null)
                 return NotFound();
 
-            //Kullanıcıya Ait Makale Listesi
+            //Kullanıcıya Ait Yorum Listesi
             var comments = await _context.Comments
                                        .Where(x => x.AppUserId == id)
                                        .Select(y => y.CommentDetail)

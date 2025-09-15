@@ -1,0 +1,63 @@
+﻿@* _MonthlyRevenueChart.cshtml SubChart2 *@
+<div class="col">
+    <div class="card rounded-4">
+        <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <div>
+                    <h4 class="mb-0">Aylık Kazanç</h4>
+                    <p class="mb-0">Poliçe Başlangıç Tarihine Göre (TL)</p>
+                </div>
+                <div class="fs-2 text-success">
+                    <i class="bi bi-bar-chart-line-fill"></i>
+                </div>
+            </div>
+            <canvas id="monthlyRevenueChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const ctx = document.getElementById('monthlyRevenueChart').getContext('2d');
+    const monthlyRevenueChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [
+                'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
+                'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'
+            ],
+            datasets: [{
+                label: 'Kazanç (TL)',
+                data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.MonthlyRevenues)),
+                backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 2,
+                borderRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.raw.toLocaleString('tr-TR') + " TL";
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return value.toLocaleString('tr-TR') + " TL";
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>

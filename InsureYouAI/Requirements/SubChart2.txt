@@ -1,0 +1,283 @@
+﻿Statik
+
+@* _MonthlyRevenueChart.cshtml *@
+<div class="col">
+    <div class="card rounded-4">
+        <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <div>
+                    <h4 class="mb-0">Aylık Kazanç</h4>
+                    <p class="mb-0">Poliçe Satışları (TL)</p>
+                </div>
+                <div class="fs-2 text-success">
+                    <i class="bi bi-bar-chart-line-fill"></i>
+                </div>
+            </div>
+            <canvas id="monthlyEarningsChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const ctx = document.getElementById('monthlyEarningsChart').getContext('2d');
+    const monthlyEarningsChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [
+                'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
+                'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'
+            ],
+            datasets: [{
+                label: 'Kazanç (TL)',
+                data: [25000, 32000, 27000, 30000, 35000, 40000, 38000, 42000, 37000, 39000, 41000, 45000],
+                backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 2,
+                borderRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.raw.toLocaleString('tr-TR') + " TL";
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return value.toLocaleString('tr-TR') + " TL";
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+
+
+------------------------------------
+
+<div class="col">
+    <div class="card rounded-4">
+        <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <div class="">
+                    <h4 class="mb-0">0000</h4>
+                    <p class="mb-0">Twitter Followers</p>
+                </div>
+                <div class="fs-2 text-twitter">
+                    <i class="bi bi-twitter"></i>
+                </div>
+            </div>
+            <div id="chart8"></div>
+        </div>
+    </div>
+</div>
+
+
+----------------------------------
+
+var currentYear = DateTime.Now.Year;
+
+            var monthlyData = await _context.Policies
+                .Where(p => p.CreatedDate.Year == currentYear)
+                .GroupBy(p => p.CreatedDate.Month)
+                .Select(g => new
+                {
+                    Month = g.Key,
+                    TotalPremium = g.Sum(x => x.PremiumAmount)
+                })
+                .ToListAsync();
+
+            // 12 aylık sabit array oluştur (boş aylar 0 görünsün diye)
+            decimal[] revenues = new decimal[12];
+            foreach (var item in monthlyData)
+            {
+                revenues[item.Month - 1] = item.TotalPremium;
+            }
+
+            ViewBag.MonthlyRevenues = revenues;
+
+            return View();
+
+----------------------------------------
+
+
+@* _MonthlyRevenueChart.cshtml SubChart2 *@
+<div class="col">
+    <div class="card rounded-4">
+        <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <div>
+                    <h4 class="mb-0">Aylık Kazanç</h4>
+                    <p class="mb-0">Poliçe Satışları (TL)</p>
+                </div>
+                <div class="fs-2 text-success">
+                    <i class="bi bi-bar-chart-line-fill"></i>
+                </div>
+            </div>
+            <canvas id="monthlyRevenueChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const ctx = document.getElementById('monthlyRevenueChart').getContext('2d');
+    const monthlyRevenueChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [
+                'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
+                'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'
+            ],
+            datasets: [{
+                label: 'Kazanç (TL)',
+                data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.MonthlyRevenues)),
+                backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 2,
+                borderRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.raw.toLocaleString('tr-TR') + " TL";
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return value.toLocaleString('tr-TR') + " TL";
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+
+
+---------------------------------
+
+ var currentYear = DateTime.Now.Year;
+
+            var monthlyData = await _context.Policies
+                .Where(p => p.StartDate.Year == currentYear)
+                .GroupBy(p => p.StartDate.Month)
+                .Select(g => new
+                {
+                    Month = g.Key,
+                    TotalPremium = g.Sum(x => x.PremiumAmount)
+                })
+                .ToListAsync();
+
+            // 12 aylık dizi (boş ayları 0 olarak gösterecek)
+            decimal[] revenues = new decimal[12];
+            foreach (var item in monthlyData)
+            {
+                revenues[item.Month - 1] = item.TotalPremium;
+            }
+
+            ViewBag.MonthlyRevenues = revenues;
+
+            return View();
+
+            ---------------------------------------------------
+
+
+
+
+<div class="col">
+    <div class="card rounded-4">
+        <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <div>
+                    <h4 class="mb-0">Aylık Kazanç</h4>
+                    <p class="mb-0">Poliçe Başlangıç Tarihine Göre (TL)</p>
+                </div>
+                <div class="fs-2 text-success">
+                    <i class="bi bi-bar-chart-line-fill"></i>
+                </div>
+            </div>
+            <canvas id="monthlyRevenueChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const ctx = document.getElementById('monthlyRevenueChart').getContext('2d');
+    const monthlyRevenueChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [
+                'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
+                'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'
+            ],
+            datasets: [{
+                label: 'Kazanç (TL)',
+                data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.MonthlyRevenues)),
+                backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 2,
+                borderRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.raw.toLocaleString('tr-TR') + " TL";
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return value.toLocaleString('tr-TR') + " TL";
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+
+--------------------------------------------
+

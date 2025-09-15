@@ -38,7 +38,26 @@ namespace InsureYouAI.Controllers
 
             #region Claude_AI_Analiz
             string apiKey = "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";
-            string prompt = $"Sen bir sigorta firmasının müşteri iletişim asistanısın.\r\n\r\nKurumsal ama samimi, net ve anlaşılır bir dille yaz.\r\n\r\nYanıtlarını 2–3 paragrafla sınırla.\r\n\r\nEksik bilgi (poliçe numarası, kimlik vb.) varsa kibarca talep et.\r\n\r\nFiyat, ödeme, teminat gibi kritik konularda kesin rakam verme, müşteri temsilcisine yönlendir.\r\n\r\nHasar ve sağlık gibi hassas durumlarda empati kur.\r\n\r\nCevaplarını teşekkür ve iyi dilekle bitir.\r\n\r\n Kullanıcının sana gönderdiği mesaj şu şekilde:' {message.MessagetDetail}.'";
+            string prompt = $@"
+Sen bir sigorta firmasının müşteri iletişim asistanısın.
+
+Kurumsal ama samimi, net ve anlaşılır bir dille yaz.
+Yanıtlarını 2–3 paragrafla sınırla.
+Eksik bilgi (poliçe numarası, kimlik vb.) varsa kibarca talep et.
+Fiyat, ödeme, teminat gibi kritik konularda kesin rakam verme, müşteri temsilcisine yönlendir.
+Hasar ve sağlık gibi hassas durumlarda empati kur.
+Cevaplarını teşekkür ve iyi dilekle bitir.
+Mesajının sonunda mutlaka şu imzayı ekle:
+'Saygılarımızla,
+InsureYou Sigorta
+Müşteri İletişim Asistanı'
+
+Çıktıyı TEK SATIRLIK, geçerli bir JSON olarak döndür:
+{{""subject"":""..."" , ""body"":""...""}}
+
+Kullanıcının sana gönderdiği mesaj şu şekilde: '{message.MessagetDetail}'
+";
+
 
             using var client = new HttpClient();
             client.BaseAddress = new Uri("https://api.anthropic.com/");
@@ -53,58 +72,66 @@ namespace InsureYouAI.Controllers
                 temperature = 0.5,
                 messages = new[]
                 {
-                    new
-                    {
-                        role="user",
-                        content=prompt
-                    }
-                }
+            new { role = "user", content = prompt }
+        }
             };
 
             var jsonContent = new StringContent(JsonSerializer.Serialize(requestBody), Encoding.UTF8, "application/json");
             var response = await client.PostAsync("v1/messages", jsonContent);
             var responseString = await response.Content.ReadAsStringAsync();
 
-            var json=JsonNode.Parse(responseString);
+            var json = JsonNode.Parse(responseString);
             string? textContent = json?["content"]?[0]?["text"]?.ToString();
-
-
             #endregion
 
             #region Email_Gönderme
-            MimeMessage mimeMessage = new MimeMessage();
-            MailboxAddress mailboxAddressFrom = new MailboxAddress("InsureYouAI Admin", "karakulakcevdet@gmail.com");
-            mimeMessage.From.Add(mailboxAddressFrom);
+            string subjectLine = "AI'dan gelen yanıt";
+            string bodyText = textContent ?? "Yanıt alınamadı.";
 
-            MailboxAddress mailboxAddressTo = new MailboxAddress("User", message.Email);
-            mimeMessage.To.Add(mailboxAddressTo);
+            // JSON Parse güvenliği
+            if (!string.IsNullOrEmpty(textContent))
+            {
+                try
+                {
+                    var clean = textContent.Trim()
+                                           .Replace("\r", "")
+                                           .Replace("\n", " ");
+                    var parsed = JsonNode.Parse(clean);
+                    subjectLine = parsed?["subject"]?.ToString() ?? subjectLine;
+                    bodyText = parsed?["body"]?.ToString() ?? bodyText;
+                }
+                catch
+                {
+                    // Claude düz metin dönerse JSON parse hatası almasın
+                    bodyText = textContent;
+                }
+            }
 
-            var bodyBuilder = new BodyBuilder();
-            bodyBuilder.TextBody = textContent;
+            var mimeMessage = new MimeMessage();
+            mimeMessage.From.Add(new MailboxAddress("InsureYouAI Admin", "karakulakcevdet@gmail.com"));
+            mimeMessage.To.Add(new MailboxAddress(message.NameSurname, message.Email));
+            mimeMessage.Subject = subjectLine;
+
+            var bodyBuilder = new BodyBuilder { TextBody = bodyText };
             mimeMessage.Body = bodyBuilder.ToMessageBody();
 
-            mimeMessage.Subject = "InsureYouAI Email Yanıtı";
-
-            SmtpClient client2 = new SmtpClient();
-            client2.Connect("smtp.gmail.com", 587, false);
-            client2.Authenticate("karakulakcevdet@gmail.com", "qqia afdw ivhu qmjr");
-            client2.Send(mimeMessage);
-            client2.Disconnect(true);
+            using var smtp = new SmtpClient();
+            smtp.Connect("smtp.gmail.com", 587, false);
+            smtp.Authenticate("karakulakcevdet@gmail.com", "qqia afdw ivhu qmjr");
+            smtp.Send(mimeMessage);
+            smtp.Disconnect(true);
             #endregion
 
             #region ClaudeAIMessage_DbKayıt
-
             ClaudeAIMessage claudeAIMessage = new ClaudeAIMessage()
             {
-                MessageDetail = textContent,
+                MessageDetail = bodyText,
                 ReceiveEmail = message.Email,
                 ReceiveNameSurname = message.NameSurname,
                 SendDate = DateTime.Now
             };
-
             _context.ClaudeAIMessages.Add(claudeAIMessage);
-            _context.SaveChanges();
-
+            await _context.SaveChangesAsync();
             #endregion
 
             return RedirectToAction("Index");

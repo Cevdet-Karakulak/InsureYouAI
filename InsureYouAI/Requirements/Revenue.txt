@@ -1,0 +1,70 @@
+﻿INSERT INTO Revenues (NameSurname, Amount, ProcessDate, Detail) VALUES
+('Ahmet Yılmaz', 1500.75, '2025-01-05', 'Sigorta müşterisi - Kasko primi ödemesi'),
+('Mehmet Demir', 2500.00, '2025-01-10', 'Sigorta müşterisi - Konut sigortası yenileme'),
+('Ayşe Kaya', 980.50, '2025-01-12', 'Sigorta müşterisi - Tamamlayıcı sağlık sigortası'),
+('Elif Çelik', 3000.00, '2025-01-15', 'Sigorta müşterisi - Trafik sigortası poliçe ödemesi'),
+('Ali Koç', 1750.40, '2025-01-20', 'Sigorta müşterisi - Seyahat sağlık sigortası'),
+('Zeynep Arslan', 2200.00, '2025-01-25', 'Sigorta müşterisi - İş yeri sigortası'),
+('Murat Öz', 1450.90, '2025-02-01', 'Sigorta müşterisi - Ferdi kaza sigortası'),
+('Deniz Acar', 3200.00, '2025-02-03', 'Sigorta müşterisi - Araç kasko yenileme'),
+('Selin Güneş', 2800.50, '2025-02-07', 'Sigorta müşterisi - Özel sağlık sigortası'),
+('Hakan Şahin', 1950.00, '2025-02-12', 'Sigorta müşterisi - Trafik sigortası'),
+('Gamze Yıldırım', 1650.00, '2025-02-14', 'Sigorta müşterisi - Konut sigortası'),
+('Burak Efe', 2100.00, '2025-02-20', 'Sigorta müşterisi - Araç sigortası'),
+('Ceren Polat', 2700.00, '2025-02-22', 'Sigorta müşterisi - Tamamlayıcı sağlık sigortası'),
+('Okan Yıldız', 3500.00, '2025-02-25', 'Sigorta müşterisi - DASK deprem sigortası'),
+('Esra Kaplan', 1800.00, '2025-03-01', 'Sigorta müşterisi - Seyahat sağlık sigortası'),
+('Tolga Kurt', 2900.00, '2025-03-04', 'Sigorta müşterisi - Trafik sigortası poliçesi'),
+('Sevgi Demirtaş', 3100.00, '2025-03-06', 'Sigorta müşterisi - Kasko sigortası'),
+('Gökhan Öztürk', 2600.00, '2025-03-10', 'Sigorta müşterisi - Sağlık sigortası'),
+('Melis Çakır', 1700.00, '2025-03-12', 'Sigorta müşterisi - Konut sigortası yenileme'),
+('Serkan Kaya', 3300.00, '2025-03-15', 'Sigorta müşterisi - Araç kasko sigortası');
+
+-------------------
+
+INSERT INTO Revenues (NameSurname, Amount, ProcessDate, Detail) VALUES
+-- Nisan
+('Kaan Yalçın', 2400.00, '2025-04-02', 'Sigorta müşterisi - Kasko primi ödemesi'),
+('Pelin Aksoy', 1800.50, '2025-04-05', 'Sigorta müşterisi - Sağlık sigortası'),
+('Barış Tunç', 2950.00, '2025-04-12', 'Sigorta müşterisi - Trafik sigortası poliçesi'),
+
+-- Mayıs
+('Seda Karaman', 3100.75, '2025-05-03', 'Sigorta müşterisi - Konut sigortası'),
+('Volkan Ergin', 2200.00, '2025-05-08', 'Sigorta müşterisi - İş yeri sigortası'),
+('Nihan Özdemir', 1500.00, '2025-05-15', 'Sigorta müşterisi - Seyahat sağlık sigortası'),
+
+-- Haziran
+('Emre Çelik', 2800.00, '2025-06-04', 'Sigorta müşterisi - DASK deprem sigortası'),
+('Yasemin Gül', 2600.40, '2025-06-10', 'Sigorta müşterisi - Özel sağlık sigortası'),
+('Tuncay Kara', 1900.00, '2025-06-18', 'Sigorta müşterisi - Araç sigortası'),
+
+-- Temmuz
+('Deniz Korkmaz', 3300.00, '2025-07-02', 'Sigorta müşterisi - Kasko poliçe ödemesi'),
+('Elçin Uçar', 1700.50, '2025-07-09', 'Sigorta müşterisi - Trafik sigortası'),
+('Burhan Sönmez', 2500.00, '2025-07-16', 'Sigorta müşterisi - Sağlık sigortası'),
+
+-- Ağustos
+('Aslı Yıldırım', 2100.00, '2025-08-05', 'Sigorta müşterisi - Tamamlayıcı sağlık sigortası'),
+('Kerem Aydın', 3000.90, '2025-08-12', 'Sigorta müşterisi - Araç kasko yenileme'),
+('Merve Yalçın', 1850.00, '2025-08-20', 'Sigorta müşterisi - Seyahat sağlık sigortası'),
+
+-- Eylül
+('İsmail Kaya', 2750.40, '2025-09-03', 'Sigorta müşterisi - Konut sigortası'),
+('Derya Güneş', 2400.00, '2025-09-10', 'Sigorta müşterisi - Trafik sigortası'),
+('Tolga Arı', 3100.00, '2025-09-18', 'Sigorta müşterisi - Ferdi kaza sigortası'),
+
+-- Ekim
+('Selda Koç', 2000.00, '2025-10-04', 'Sigorta müşterisi - Sağlık sigortası'),
+('Hüseyin Demir', 2900.00, '2025-10-11', 'Sigorta müşterisi - Araç sigortası'),
+('Gamze Çetin', 2600.50, '2025-10-20', 'Sigorta müşterisi - DASK deprem sigortası'),
+
+-- Kasım
+('Furkan Kaplan', 3200.00, '2025-11-05', 'Sigorta müşterisi - Trafik sigortası'),
+('Ezgi Polat', 1800.75, '2025-11-12', 'Sigorta müşterisi - Seyahat sağlık sigortası'),
+('Orhan Karaca', 2500.00, '2025-11-18', 'Sigorta müşterisi - Kasko poliçe ödemesi'),
+
+-- Aralık
+('Cansu Yıldız', 2700.00, '2025-12-02', 'Sigorta müşterisi - Konut sigortası yenileme'),
+('Berk Yalın', 1900.50, '2025-12-09', 'Sigorta müşterisi - Araç sigortası'),
+('Nazlı Kurt', 3000.00, '2025-12-15', 'Sigorta müşterisi - Sağlık sigortası'),
+('Eren Kılıç', 2200.40, '2025-12-20', 'Sigorta müşterisi - Trafik sigortası');

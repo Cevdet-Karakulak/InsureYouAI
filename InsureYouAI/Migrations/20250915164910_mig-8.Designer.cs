@@ -4,6 +4,7 @@ using InsureYouAI.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InsureYouAI.Migrations
 {
     [DbContext(typeof(InsureContext))]
-    partial class InsureContextModelSnapshot : ModelSnapshot
+    [Migration("20250915164910_mig-8")]
+    partial class mig8
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -304,33 +307,6 @@ namespace InsureYouAI.Migrations
                     b.ToTable("Contacts");
                 });
 
-            modelBuilder.Entity("InsureYouAI.Entities.Expense", b =>
-                {
-                    b.Property<int>("ExpenseId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExpenseId"));
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Detail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NameSurname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ProcessDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("ExpenseId");
-
-                    b.ToTable("Expenses");
-                });
-
             modelBuilder.Entity("InsureYouAI.Entities.Gallery", b =>
                 {
                     b.Property<int>("GalleryId")
@@ -378,6 +354,9 @@ namespace InsureYouAI.Migrations
                     b.Property<DateTime>("SendDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Sender")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Subject")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -385,52 +364,6 @@ namespace InsureYouAI.Migrations
                     b.HasKey("MessageId");
 
                     b.ToTable("Messages");
-                });
-
-            modelBuilder.Entity("InsureYouAI.Entities.Policy", b =>
-                {
-                    b.Property<int>("PolicyId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PolicyId"));
-
-                    b.Property<string>("AppUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PolicyNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PolicyType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("PremiumAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("PolicyId");
-
-                    b.HasIndex("AppUserId");
-
-                    b.ToTable("Policies");
                 });
 
             modelBuilder.Entity("InsureYouAI.Entities.PricingPlan", b =>
@@ -476,33 +409,6 @@ namespace InsureYouAI.Migrations
                     b.HasIndex("PricingPlanId");
 
                     b.ToTable("PricingPlanItems");
-                });
-
-            modelBuilder.Entity("InsureYouAI.Entities.Revenue", b =>
-                {
-                    b.Property<int>("RevenueId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RevenueId"));
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Detail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NameSurname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ProcessDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("RevenueId");
-
-                    b.ToTable("Revenues");
                 });
 
             modelBuilder.Entity("InsureYouAI.Entities.Service", b =>
@@ -782,17 +688,6 @@ namespace InsureYouAI.Migrations
                     b.Navigation("Article");
                 });
 
-            modelBuilder.Entity("InsureYouAI.Entities.Policy", b =>
-                {
-                    b.HasOne("InsureYouAI.Entities.AppUser", "AppUser")
-                        .WithMany("Policies")
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
-                });
-
             modelBuilder.Entity("InsureYouAI.Entities.PricingPlanItem", b =>
                 {
                     b.HasOne("InsureYouAI.Entities.PricingPlan", "PricingPlan")
@@ -860,8 +755,6 @@ namespace InsureYouAI.Migrations
                     b.Navigation("Articles");
 
                     b.Navigation("Comments");
-
-                    b.Navigation("Policies");
                 });
 
             modelBuilder.Entity("InsureYouAI.Entities.Article", b =>

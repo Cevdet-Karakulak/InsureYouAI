@@ -1,0 +1,60 @@
+﻿INSERT INTO Expenses (NameSurname, Amount, ProcessDate, Detail) VALUES
+-- Ocak
+('Ofis Kira', 5000.00, '2025-01-05', 'Ocak ayı ofis kira ödemesi'),
+('Elektrik Dağıtım A.Ş.', 1200.50, '2025-01-12', 'Elektrik faturası'),
+('Turk Telekom', 850.00, '2025-01-18', 'İnternet ve telefon faturası'),
+
+-- Şubat
+('Ofis Kira', 5000.00, '2025-02-05', 'Şubat ayı ofis kira ödemesi'),
+('Google Ads', 2200.00, '2025-02-10', 'Reklam gideri'),
+('Personel Yemek Kartı', 1600.00, '2025-02-15', 'Personel yemek gideri'),
+
+-- Mart
+('Ofis Kira', 5000.00, '2025-03-05', 'Mart ayı ofis kira ödemesi'),
+('Adobe Systems', 1200.00, '2025-03-09', 'Tasarım yazılımı lisans yenileme'),
+('Shell Petrol', 950.00, '2025-03-20', 'Araç yakıt gideri'),
+
+-- Nisan
+('Ofis Kira', 5000.00, '2025-04-05', 'Nisan ayı ofis kira ödemesi'),
+('Amazon AWS', 2800.00, '2025-04-12', 'Sunucu barındırma gideri'),
+('Yemeksepeti', 1350.00, '2025-04-19', 'Personel yemek gideri'),
+
+-- Mayıs
+('Ofis Kira', 5000.00, '2025-05-05', 'Mayıs ayı ofis kira ödemesi'),
+('Facebook Ads', 2500.00, '2025-05-08', 'Dijital reklam harcaması'),
+('Vodafone', 900.00, '2025-05-15', 'Telefon ve internet faturası'),
+
+-- Haziran
+('Ofis Kira', 5000.00, '2025-06-05', 'Haziran ayı ofis kira ödemesi'),
+('Turkcell', 1100.00, '2025-06-10', 'Mobil hat gideri'),
+('Microsoft Office 365', 1400.00, '2025-06-20', 'Yazılım lisansı'),
+
+-- Temmuz
+('Ofis Kira', 5000.00, '2025-07-05', 'Temmuz ayı ofis kira ödemesi'),
+('LinkedIn Ads', 2300.00, '2025-07-12', 'Reklam gideri'),
+('UPS Kargo', 800.00, '2025-07-18', 'Kargo ve lojistik giderleri'),
+
+-- Ağustos
+('Ofis Kira', 5000.00, '2025-08-05', 'Ağustos ayı ofis kira ödemesi'),
+('Turk Telekom', 850.00, '2025-08-11', 'İnternet ve telefon faturası'),
+('Personel Prim', 3200.00, '2025-08-25', 'Personel performans primi'),
+
+-- Eylül
+('Ofis Kira', 5000.00, '2025-09-05', 'Eylül ayı ofis kira ödemesi'),
+('Shell Petrol', 1050.00, '2025-09-14', 'Araç yakıt gideri'),
+('Google Cloud', 2600.00, '2025-09-22', 'Sunucu barındırma gideri'),
+
+-- Ekim
+('Ofis Kira', 5000.00, '2025-10-05', 'Ekim ayı ofis kira ödemesi'),
+('Facebook Ads', 2400.00, '2025-10-12', 'Reklam gideri'),
+('Adobe Systems', 1200.00, '2025-10-19', 'Tasarım yazılımı lisansı'),
+
+-- Kasım
+('Ofis Kira', 5000.00, '2025-11-05', 'Kasım ayı ofis kira ödemesi'),
+('Turkcell', 1150.00, '2025-11-10', 'Mobil hat gideri'),
+('Personel Yemek Kartı', 1650.00, '2025-11-20', 'Personel yemek gideri'),
+
+-- Aralık
+('Ofis Kira', 5000.00, '2025-12-05', 'Aralık ayı ofis kira ödemesi'),
+('Amazon AWS', 2900.00, '2025-12-12', 'Sunucu barındırma gideri'),
+('Yeni Yıl Partisi', 3500.00, '2025-12-28', 'Personel motivasyon etkinliği');
