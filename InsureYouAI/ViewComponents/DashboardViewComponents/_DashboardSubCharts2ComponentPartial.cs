@@ -25,7 +25,6 @@ namespace InsureYouAI.ViewComponents.DashboardViewComponents
                 })
                 .ToListAsync();
 
-            // 12 aylık dizi (boş ayları 0 olarak gösterecek)
             decimal[] revenues = new decimal[12];
             foreach (var item in monthlyData)
             {

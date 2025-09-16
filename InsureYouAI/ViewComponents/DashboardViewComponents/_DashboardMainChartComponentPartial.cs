@@ -49,8 +49,9 @@ namespace InsureYouAI.ViewComponents.DashboardViewComponents
                 ExpenseTotals = allMonths.Select(m => expenseData.FirstOrDefault(x => x.Month == m)?.TotalAmount ?? 0).ToList()
             };
 
-            ViewBag.v1 = _context.Revenues.Sum(x => x.Amount);
-            ViewBag.v2 = _context.Expenses.Sum(x => x.Amount);
+            ViewBag.v1 = _context.Revenues.Sum(x => x.Amount).ToString("C", new System.Globalization.CultureInfo("tr-TR"));
+            ViewBag.v2 = _context.Expenses.Sum(x => x.Amount).ToString("C", new System.Globalization.CultureInfo("tr-TR"));
+
 
             return View(model);
         }

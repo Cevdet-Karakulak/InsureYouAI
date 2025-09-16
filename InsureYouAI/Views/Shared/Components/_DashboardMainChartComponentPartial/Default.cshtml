@@ -19,27 +19,39 @@
             </div>
             <div class="d-flex align-items-center gap-3 mb-3">
                 <div>
-                    <h4 class="text-success mb-0" id="revenueTotal">₺ @ViewBag.v1</h4>
+                    <h4 class="text-success mb-0" id="revenueTotal"> @ViewBag.v1</h4>
                     <p class="mb-0">Gelen Tutar</p>
                 </div>
                 <div class="vr"></div>
                 <div>
-                    <h4 class="text-danger mb-0">₺ @ViewBag.v2</h4>
+                    <h4 class="text-danger mb-0"> @ViewBag.v2</h4>
                     <p class="mb-0">Giden Tutar</p>
                 </div>
             </div>
 
             <!-- Chart Alanı -->
-            <div class="chart-container" style="height: 320px;">
+            <div class="chart-container">
                 <canvas id="revenueExpenseChart"></canvas>
             </div>
+            <style>
+                .chart-container {
+                    position: relative;
+                    height: 100% !important;
+                    min-height: 320px;
+                }
+
+                #revenueExpenseChart {
+                    width: 100% !important;
+                    height: auto !important;
+                }
+            </style>
         </div>
     </div>
 </div>
 
 <!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
+@* <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ *@<script>
     document.addEventListener("DOMContentLoaded", function () {
         const months = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Months));
         const revenueTotals = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.RevenueTotals));
