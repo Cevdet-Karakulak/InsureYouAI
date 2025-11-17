@@ -13,7 +13,13 @@ namespace InsureYouAI.ViewComponents.DashboardViewComponents
         }
         public IViewComponentResult Invoke()
         {
-            var values = _context.Comments.Include(x => x.AppUser).OrderByDescending(y => y.CommentId).Take(7).ToList();
+            var values = _context.Comments
+                .Include(x => x.AppUser)
+                .Where(c => c.CommentStatus == "Yorum Onaylandı") // sadece onaylı yorumlar
+                .OrderByDescending(y => y.CommentId)
+                .Take(7)
+                .ToList();
+
             return View(values);
         }
     }

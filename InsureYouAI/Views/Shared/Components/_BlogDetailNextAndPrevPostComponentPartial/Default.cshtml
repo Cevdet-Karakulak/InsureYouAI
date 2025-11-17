@@ -1,19 +1,87 @@
-﻿<div class="posts_navigation pt-35 pb-35">
-    <div class="row align-items-center">
-        <div class="col-xl-4 col-md-5">
-            <div class="prev-link">
-                <span>Önceki Post</span>
-                <h4><a href="#">Tips Minimalist</a></h4>
-            </div>
+﻿@model InsureYouAI.Models.NextPrevArticleViewModel
+
+<div class="posts_navigation pt-35 pb-35">
+    <div class="nav-flex">
+
+        <!-- Önceki -->
+        <div class="nav-prev">
+            <span>ÖNCEKİ POST</span>
+            <h4>
+                @if (Model.PrevId.HasValue)
+                {
+                    <a href="/Blog/BlogDetail/@Model.PrevId">@Model.PrevTitle</a>
+                }
+                else
+                {
+                    <span>Önceki makale yok</span>
+                }
+            </h4>
         </div>
-        <div class="col-xl-4 col-md-2 text-left text-md-center">
-            <a href="blog.html" class="blog-filter"><img src="/defaultimages/c_d01.png" alt=""></a>
+
+        <!-- Orta ikon -->
+        <div class="nav-center">
+            <a href="/Blog/BlogList" class="blog-filter">
+                <img src="/defaultimages/c_d01.png" alt="">
+            </a>
         </div>
-        <div class="col-xl-4 col-md-5">
-            <div class="next-link text-left text-md-right">
-                <span>Sonraki Post</span>
-                <h4><a href="#">Less Is More</a></h4>
-            </div>
+
+        <!-- Sonraki -->
+        <div class="nav-next">
+            <span>SONRAKİ POST</span>
+            <h4>
+                @if (Model.NextId.HasValue)
+                {
+                    <a href="/Blog/BlogDetail/@Model.NextId">@Model.NextTitle</a>
+                }
+                else
+                {
+                    <span>Sonraki makale yok</span>
+                }
+            </h4>
         </div>
+
     </div>
 </div>
+
+<style>
+    .nav-flex {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    .nav-prev,
+    .nav-next {
+        width: 33%;
+    }
+
+    .nav-prev {
+        text-align: left;
+    }
+
+    .nav-next {
+        text-align: right;
+    }
+
+    .nav-center {
+        width: 33%;
+        text-align: center;
+    }
+
+        .nav-center img {
+            width: 55px;
+            height: 55px;
+            opacity: .9;
+            border-radius: 50%;
+        }
+
+    .nav-prev h4 a,
+    .nav-next h4 a {
+        display: inline-block;
+        max-width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>

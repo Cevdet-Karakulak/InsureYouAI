@@ -6,7 +6,7 @@
         @foreach (var item in Model)
         {
             <li class="cat-item cat-item-16">
-                <a href="#">@item.CategoryName</a> (@(item.Articles?.Count ?? 0))
+                <a href="/Blog/GetBlogByCategory/@item.CategoryId">@item.CategoryName</a> (@(item.Articles?.Count ?? 0))
             </li>
         }
     </ul>

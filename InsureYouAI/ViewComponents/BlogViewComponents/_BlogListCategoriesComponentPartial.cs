@@ -14,10 +14,9 @@ namespace InsureYouAI.ViewComponents.BlogViewComponents
 
         public IViewComponentResult Invoke()
         {
-            // Kategorileri Articles ile birlikte getir
             var values = _context.Categories
-     .Include(c => c.Articles) // Articles koleksiyonunu yükle
-     .ToList();
+            .Include(c => c.Articles)
+            .ToList();
 
             return View(values);
         }

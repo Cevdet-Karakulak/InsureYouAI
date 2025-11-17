@@ -9,6 +9,7 @@
 
 
 <body>
+    <!-- header -->
     <header class="header-area header-three">
 
         @await Component.InvokeAsync("_DefaultHeaderComponentPartial")
@@ -18,17 +19,26 @@
         @await Component.InvokeAsync("_DefaultNavbarComponentPartial")
 
     </header>
-    
+    <!-- header-end -->
+    <!-- offcanvas-area -->
     @await Component.InvokeAsync("_DefaultMobileMenuComponentPartial")
 
+    <!-- offcanvas-end -->
+    <!-- main-area -->
     <main>
 
-@*         @await Component.InvokeAsync("_BlogListBreadCrumbComponentPartial")
- *@
+
+        <!-- /search-popup -->
+        <!-- breadcrumb-area -->
+        @await Component.InvokeAsync("_BlogListBreadCrumbComponentPartial")
+
+
+        <!-- breadcrumb-area-end -->
+        <!-- inner-blog -->
         <section class="inner-blog pt-120 pb-120">
             <div class="container">
                 <div class="row">
-                    @await Component.InvokeAsync("_BlogListAllBlogsComponentPartial")
+                    @await Component.InvokeAsync("_BlogListByCategoryComponentPartial", new { id = ViewBag.c })
 
 
 
@@ -52,12 +62,18 @@
                 </div>
             </div>
         </section>
-        
+        <!-- inner-blog-end -->
+        <!-- newslater-area -->
         @await Html.PartialAsync("~/Views/Default/SubscribeEmail.cshtml")
+        <!-- newslater-aread-end -->
     </main>
+    <!-- main-area-end -->
+    <!-- footer -->
     @await Component.InvokeAsync("_DefaultFooterComponentPartial")
 
     @await Component.InvokeAsync("_DefaultScriptsComponentPartial")
+    <!-- footer-end -->
+    <!-- JS here -->
 
 </body>
 </html>

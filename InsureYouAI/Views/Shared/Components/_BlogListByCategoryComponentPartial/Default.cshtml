@@ -1,0 +1,88 @@
+﻿@model List<Article>
+
+<div class="col-lg-8">
+
+    <div style="
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        color: white;
+        padding: 22px;
+        border-radius: 16px;
+        margin-bottom: 35px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    ">
+        <div style="
+            background: rgba(255,255,255,0.18);
+            width: 55px;
+            height: 55px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 14px;
+            font-size: 26px;
+            box-shadow: inset 0 0 12px rgba(255,255,255,0.2);
+        ">
+            📝
+        </div>
+
+        <div>
+            <div style="font-size: 20px; font-weight:700; letter-spacing:0.5px;">
+                Bu kategoride toplam <span style="color:#ffe17a;">@Model?.Count</span> içerik bulundu.
+            </div>
+            <div style="opacity:0.9; margin-top:3px; font-size:14px;">
+                En güncel ve seçkin içerikler aşağıda listelenmiştir.
+            </div>
+        </div>
+    </div>
+
+    @if (Model == null || !Model.Any())
+    {
+        <p class="alert alert-info">Bu kategoride henüz içerik bulunmamaktadır.</p>
+    }
+    else
+    {
+        @foreach (var item in Model)
+        {
+            <div class="bsingle__post mb-50">
+
+                <div class="bsingle__post-thumb">
+                    <img src="@item.CoverImageUrl" alt="">
+                </div>
+
+                <div class="bsingle__content">
+                    <div class="meta-info">
+                        <ul>
+                            <li><i class="fal fa-user"></i> @(item.AppUser?.Name) @(item.AppUser?.Surname)</li>
+                            <li><i class="fal fa-calendar-alt"></i> @item.CreatedDate.ToString("dd-MMM-yyyy")</li>
+                            <li><i class="fal fa-car"></i> Kategori: @(item.Category?.CategoryName)</li>
+                            <li>
+                                <i class="fal fa-comment"></i>
+                                @item.Comments.Count(c => c.CommentStatus == "Yorum Onaylandı") Yorum
+                            </li>
+                        </ul>
+                    </div>
+
+                    <h2>
+                        <a href="/Blog/BlogDetail/@item.ArticleId">@item.Title</a>
+                    </h2>
+
+                    <p>
+                        @{
+                            var text = item.Content ?? "";
+                            var shortText = text.Length > 300 ? text.Substring(0, 300) : text;
+                        }
+                        @shortText...
+                    </p>
+
+                    <div class="blog__btn">
+                        <a href="/Blog/BlogDetail/@item.ArticleId" class="btn">Devamını Oku</a>
+                    </div>
+                </div>
+
+            </div>
+        }
+    }
+
+</div>

@@ -1,6 +1,7 @@
 ﻿using InsureYouAI.Context;
 using InsureYouAI.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
@@ -10,19 +11,35 @@ namespace InsureYouAI.Controllers
     public class BlogController : Controller
     {
         private readonly InsureContext _context;
-        public BlogController(InsureContext context)
+        private readonly IConfiguration _config;
+
+        public BlogController(InsureContext context, IConfiguration config)
         {
             _context = context;
+            _config = config;
         }
+
         public IActionResult BlogList()
         {
             return View();
         }
 
+        public IActionResult GetBlogByCategory(int id)
+        {
+            ViewBag.c = id;
+            return View();
+        }
+
         public IActionResult BlogDetail(int id)
         {
-            ViewBag.i = id;
-            return View();
+            var article = _context.Articles
+                .Include(a => a.AppUser)
+                .Include(a => a.Category)
+                .Include(a => a.Comments)
+                .FirstOrDefault(a => a.ArticleId == id);
+
+            ViewBag.i = id; 
+            return View(article);
         }
 
         public PartialViewResult GetBlog()
@@ -39,7 +56,6 @@ namespace InsureYouAI.Controllers
         [HttpGet]
         public PartialViewResult AddComment()
         {
-
             return PartialView();
         }
 
@@ -49,72 +65,106 @@ namespace InsureYouAI.Controllers
             comment.CommentDate = DateTime.Now;
             comment.AppUserId = "f454e769-3a98-4358-ad3e-42ccc79973a7";
 
-            using (var client = new HttpClient())
+            var apiKey = _config["HuggingFace:ApiKey"];
+            var toxicUrl = _config["HuggingFace:ModelUrl"];
+            var translateUrl = _config["HuggingFace:TranslateUrl"];
+
+            var toxicWords = new List<string>
             {
-                var apiKey = "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";
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+                "orospu", "amk", "amına", "siktir", "piç", "yarrak",
+                "kahpe", "gavat", "pezevenk", "it oğlu it", "sikerim",
+                "bokka", "bok herif", "şerefsiz",
 
-                try
+                "gerizekalı", "aptal", "salak", "embesil", "dangalak",
+                "malsın", "düşüncesiz", "geri zekalı", "hödük",
+
+                "iğrenç", "iğrençlik", "rezil", "kepaze", "utanç verici",
+                "dangalak", "alçak", "aşağılık", "karaktersiz", "hain",
+                "şarlatan", "soytarı", "yalancı", "ikiyüzlü", "sahtekar",
+
+                "insanlığa ayıp", "insanlığa hakaret", "varlığın utanç",
+                "yüz karası", "ayıpsın", "utanç kaynağı",
+
+                "nefret ediyorum", "senden tiksiniyorum", "tiksinç",
+                "lanet olsun", "yok ol", "defol git",
+
+                "değersiz", "çöp", "çöp gibi", "hiçsin", "bok gibi",
+                "küçüksün", "zavallı", "acınası", "yetersiz", "ezik",
+                "basit insan", "masılsın", "kişiliksiz",
+
+                "gebersin", "gebersen iyi olur", "öl artık",
+                "seni yok etsinler", "lanet insan",
+
+                "namussuz", "haysiyetsiz", "onursuz",
+            };
+
+            string lower = comment.CommentDetail.ToLower();
+
+            if (toxicWords.Any(w => lower.Contains(w)))
+            {
+                comment.CommentStatus = "Toksik Yorum";
+            }
+
+            if (string.IsNullOrEmpty(comment.CommentStatus))
+            {
+                using (var client = new HttpClient())
                 {
-                    var translateRequestBody = new
-                    {
-                        inputs = comment.CommentDetail
-                    };
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
 
-                    var translateJson = JsonSerializer.Serialize(translateRequestBody);
-                    var translateContent = new StringContent(translateJson, Encoding.UTF8, "application/json");
+                    try { 
+                        var translateBody = new { inputs = comment.CommentDetail };
+                        var translateJson = JsonSerializer.Serialize(translateBody);
+                        var translateContent = new StringContent(translateJson, Encoding.UTF8, "application/json");
 
-                    var translateResponse = await client.PostAsync("https://api-inference.huggingface.co/models/Helsinki-NLP/opus-mt-tr-en", translateContent);
-                    var translateResponseString = await translateResponse.Content.ReadAsStringAsync();
+                        var translateResponse = await client.PostAsync(translateUrl, translateContent);
+                        var translateString = await translateResponse.Content.ReadAsStringAsync();
 
-                    string englishText = comment.CommentDetail;
-                    if (translateResponseString.TrimStart().StartsWith("["))
-                    {
-                        var translateDoc = JsonDocument.Parse(translateResponseString);
-                        englishText = translateDoc.RootElement[0].GetProperty("translation_text").GetString();
-                    }
+                        string englishText = comment.CommentDetail;
 
-
-                    var toxicRequestBody = new
-                    {
-                        inputs = englishText
-                    };
-
-                    var toxicJson = JsonSerializer.Serialize(toxicRequestBody);
-                    var toxicContent = new StringContent(toxicJson, Encoding.UTF8, "application/json");
-                    var toxicResponse = await client.PostAsync("https://api-inference.huggingface.co/models/unitary/toxic-bert", toxicContent);
-                    var toxicResponseString = await toxicResponse.Content.ReadAsStringAsync();
-
-                    if (toxicResponseString.TrimStart().StartsWith("["))
-                    {
-                        var toxicDoc = JsonDocument.Parse(toxicResponseString);
-                        foreach (var item in toxicDoc.RootElement[0].EnumerateArray())
+                        if (translateString.TrimStart().StartsWith("["))
                         {
-                            string label = item.GetProperty("label").GetString();
-                            double score = item.GetProperty("score").GetDouble();
+                            var doc = JsonDocument.Parse(translateString);
+                            englishText = doc.RootElement[0].GetProperty("translation_text").GetString();
+                        }
 
-                            if (score > 0.5)
+                        var toxicBody = new { inputs = englishText };
+                        var toxicJson = JsonSerializer.Serialize(toxicBody);
+                        var toxicContent = new StringContent(toxicJson, Encoding.UTF8, "application/json");
+
+                        var toxicResponse = await client.PostAsync(toxicUrl, toxicContent);
+                        var toxicString = await toxicResponse.Content.ReadAsStringAsync();
+
+                        if (toxicString.TrimStart().StartsWith("["))
+                        {
+                            var toxicDoc = JsonDocument.Parse(toxicString);
+                            foreach (var item in toxicDoc.RootElement[0].EnumerateArray())
                             {
-                                comment.CommentStatus = "Toksik Yorum";
-                                break;
+                                string label = item.GetProperty("label").GetString();
+                                double score = item.GetProperty("score").GetDouble();
+
+                                if (score > 0.5)
+                                {
+                                    comment.CommentStatus = "Toksik Yorum";
+                                    break;
+                                }
                             }
                         }
-                    }
 
-                    if (string.IsNullOrEmpty(comment.CommentStatus))
-                    {
-                        comment.CommentStatus = "Yorum Onaylandı";
+                        if (string.IsNullOrEmpty(comment.CommentStatus))
+                        {
+                            comment.CommentStatus = "Yorum Onaylandı";
+                        }
                     }
-                }
-                catch (Exception ex)
-                {
-                    comment.CommentStatus = "Onay Bekliyor";
+                    catch
+                    {
+                        comment.CommentStatus = "Onay Bekliyor";
+                    }
                 }
             }
 
-
             _context.Comments.Add(comment);
             _context.SaveChanges();
+
             return RedirectToAction("BlogDetail", new { id = comment.ArticleId });
         }
     }

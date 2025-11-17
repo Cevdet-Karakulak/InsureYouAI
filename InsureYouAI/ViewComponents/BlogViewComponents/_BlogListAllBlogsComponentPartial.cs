@@ -16,10 +16,18 @@ namespace InsureYouAI.ViewComponents.BlogViewComponents
             var values = _context.Articles
                 .Include(x => x.Category)
                 .Include(y => y.AppUser)
-                .Include(z => z.Comments) // 🔥 Yorumları dahil ettik
+                .Include(z => z.Comments)
                 .ToList();
+
+            foreach (var article in values)
+            {
+                article.Comments = article.Comments
+                    .Where(c => c.CommentStatus == "Yorum Onaylandı")
+                    .ToList();
+            }
 
             return View(values);
         }
+
     }
 }

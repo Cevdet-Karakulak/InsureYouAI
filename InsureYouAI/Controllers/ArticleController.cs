@@ -23,6 +23,10 @@ public class ArticleController : Controller
     [HttpGet]
     public IActionResult CreateArticle()
     {
+        ViewBag.Categories = _context.Categories
+            .Select(x => new { x.CategoryId, x.CategoryName })
+            .ToList();
+
         return View();
     }
     [HttpPost]

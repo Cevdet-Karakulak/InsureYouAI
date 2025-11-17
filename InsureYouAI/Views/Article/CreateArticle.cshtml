@@ -10,26 +10,60 @@
         <div class="d-flex align-items-center">
             <h5 class="mb-0">Yeni Makale Oluşturma Sayfası</h5>
         </div>
+
         <form method="post">
+
             <label for="Title" class="form-label">Başlık</label>
             <input type="text" class="form-control mb-3" asp-for="Title" />
             <br />
+
             <label for="CoverImageUrl" class="form-label">Kapak Fotoğrafı</label>
             <input type="text" class="form-control mb-3" asp-for="CoverImageUrl" />
             <br />
+
             <label for="MainCoverImageUrl" class="form-label">Makale Detay Kapak Görseli</label>
             <input type="text" class="form-control mb-3" asp-for="MainCoverImageUrl" />
             <br />
 
             <label for="CategoryId" class="form-label">Kategori</label>
-            <input type="text" class="form-control mb-3" asp-for="CategoryId" />
+            <select asp-for="CategoryId" class="form-control mb-3">
+                <option value="">Kategori Seçin</option>
+                @foreach (var item in ViewBag.Categories)
+                {
+                    <option value="@item.CategoryId">@item.CategoryName</option>
+                }
+            </select>
             <br />
 
             <label class="form-label">İçerik</label>
-            <textarea class="form-control" asp-for="Content" rows="15" ></textarea>
+            <textarea class="form-control" asp-for="Content" rows="15"></textarea>
             <br />
 
             <button type="submit" class="btn btn-info"> Makaleyi Kaydet </button>
         </form>
     </div>
 </div>
+
+<script src="https://cdn.ckeditor.com/4.20.2/full-all/ckeditor.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        if (document.getElementById("Content")) {
+
+            CKEDITOR.replace("Content", {
+                height: 400,
+                extraPlugins: 'colorbutton,font',
+                toolbar: [
+                    { name: 'document', items: ['Source', '-', 'Preview'] },
+                    { name: 'clipboard', items: ['Cut', 'Copy', 'Paste', '-', 'Undo', 'Redo'] },
+                    { name: 'styles', items: ['Format', 'Font', 'FontSize'] },
+                    { name: 'colors', items: ['TextColor', 'BGColor'] },
+                    { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat'] },
+                    { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight'] },
+                    { name: 'insert', items: ['Image', 'Table', 'Link', 'Unlink'] },
+                    { name: 'tools', items: ['Maximize'] }
+                ]
+            });
+
+        }
+    });
+</script>

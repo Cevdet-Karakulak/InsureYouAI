@@ -1,22 +1,74 @@
-﻿   <div class="avatar__wrap text-center mb-45">
-                                <div class="avatar-img">
-                                    <img src="img/blog/comment/avatar.png" alt="">
-                                </div>
-                                <div class="avatar__info">
-                                    <h5>Cevdet Karakulak</h5>
-                                    <div class="avatar__info-social">
-                                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                        <a href="#"><i class="fab fa-twitter"></i></a>
-                                        <a href="#"><i class="fab fa-instagram"></i></a>
-                                        <a href="#"><i class="fab fa-behance"></i></a>
-                                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                                    </div>
-                                </div>
-                                <div class="avatar__wrap-content">
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-                                        et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                                        aliquip ex ea commodo consequa aute irure dolor.
-                                    </p>
-                                </div>
-                            </div>
+﻿@model AppUser
+
+<div class="author-box">
+
+    <div class="author-avatar">
+        <img src="@Model.ImageUrl" alt="">
+    </div>
+
+    <h5 class="author-name">@Model.Name @Model.Surname</h5>
+
+    <div class="author-social">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-behance"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+    </div>
+
+    <p class="author-desc">@Model.Description</p>
+
+</div>
+
+<style>
+
+    .author-box {
+        text-align: center;
+        padding: 40px 30px;
+        border-radius: 8px;
+        background: #fafafa;
+        margin-top: 40px;
+    }
+
+    .author-avatar {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 20px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 3px solid #e7e7e7;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+        .author-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    .author-name {
+        font-size: 22px;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .author-social a {
+        margin: 0 6px;
+        color: #333;
+        font-size: 14px;
+        transition: .2s;
+    }
+
+        .author-social a:hover {
+            color: #0078ff;
+        }
+
+    .author-desc {
+        max-width: 650px;
+        margin: 20px auto 0;
+        font-size: 15px;
+        line-height: 1.7;
+        color: #666;
+    }
+
+</style>
