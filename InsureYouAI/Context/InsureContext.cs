@@ -8,7 +8,7 @@ public class InsureContext : IdentityDbContext<AppUser>
 {
     override protected void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("Server=FLOPPA\\SQLEXPRESS01;initial Catalog=InsureDb;integrated Security=True; trust server certificate = true");
+        optionsBuilder.UseSqlServer("Server=localhost\\MSSQLSERVER2022;initial Catalog=InsureDb;integrated Security=True; trust server certificate = true");
     }
 
     public DbSet<About> Abouts { get; set; }

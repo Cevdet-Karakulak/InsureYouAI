@@ -1,0 +1,188 @@
+﻿<div class="row row-cols-1 row-cols-lg-4 row-cols-xl-4 modern-stats">
+
+    <div class="col">
+        <div class="modern-card purple">
+            <div class="modern-inner">
+                <div>
+                    <h4 class="stat-number">@ViewBag.TotalCategoryCount</h4>
+                    <p class="stat-label">Toplam Kategori</p>
+                </div>
+                <div class="stat-icon"><i class="bi bi-grid"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="modern-card blue">
+            <div class="modern-inner">
+                <div>
+                    <h4 class="stat-number">@ViewBag.TotalArticleCount</h4>
+                    <p class="stat-label">Toplam Makale</p>
+                </div>
+                <div class="stat-icon"><i class="bi bi-journal-text"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="modern-card orange">
+            <div class="modern-inner">
+                <div>
+                    <h4 class="stat-number">@ViewBag.TotalPoliciesCount</h4>
+                    <p class="stat-label">Satılan Poliçe Sayısı</p>
+                </div>
+                <div class="stat-icon"><i class="bi bi-file-lock"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="modern-card green">
+            <div class="modern-inner">
+                <div>
+                    <h4 class="stat-number">@ViewBag.TotalPoliciesByThisMonthCount</h4>
+                    <p class="stat-label">Bu Ay Satılan Poliçe</p>
+                </div>
+                <div class="stat-icon"><i class="bi bi-calendar-check"></i></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="row row-cols-1 row-cols-lg-4 row-cols-xl-4 modern-stats">
+
+    <div class="col">
+        <div class="modern-card pink">
+            <div class="modern-inner">
+                <div>
+                    <h4 class="stat-number">@ViewBag.TotalCommentCount</h4>
+                    <p class="stat-label">Toplam Yorum</p>
+                </div>
+                <div class="stat-icon"><i class="bi bi-chat-left-text"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="modern-card cyan">
+            <div class="modern-inner">
+                <div>
+                    <h4 class="stat-number">@ViewBag.TotalUserCount</h4>
+                    <p class="stat-label">Toplam Kullanıcı</p>
+                </div>
+                <div class="stat-icon"><i class="bi bi-people"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="modern-card red">
+            <div class="modern-inner">
+                <div>
+                    <h4 class="stat-number">@ViewBag.AvgPolicyAmount.ToString("0.00")</h4>
+                    <p class="stat-label">Poliçe Ortalama Tutar</p>
+                </div>
+                <div class="stat-icon"><i class="bi bi-share"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="modern-card yellow">
+            <div class="modern-inner">
+                <div>
+                    <h4 class="stat-number">@ViewBag.LastRevenueAmount</h4>
+                    <p class="stat-label">Son Yapılan Poliçe Tutarı</p>
+                </div>
+                <div class="stat-icon"><i class="bi bi-cash-stack"></i></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<style>
+
+    /* Base Card Style */
+    .modern-card {
+        border-radius: 20px;
+        padding: 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+        transition: all 0.25s ease;
+        color: white;
+    }
+
+        .modern-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 18px 38px rgba(0,0,0,0.22);
+        }
+
+    .modern-inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .stat-number {
+        font-size: 34px;
+        font-weight: 700;
+        margin: 0;
+        color: #fff;
+    }
+
+    .stat-label {
+        margin: 0;
+        margin-top: 6px;
+        font-size: 16px;
+        color: rgba(255,255,255,0.92);
+    }
+
+    .stat-icon i {
+        font-size: 42px;
+        opacity: 0.95;
+    }
+
+
+    /* ------- 8 FARKLI RENK ------- */
+
+    .modern-card.purple {
+        background: linear-gradient(135deg, #8e44ff, #bc7cff);
+    }
+
+    .modern-card.blue {
+        background: linear-gradient(135deg, #2d6bff, #6aa0ff);
+    }
+
+    .modern-card.orange {
+        background: linear-gradient(135deg, #ff8d3c, #ffb067);
+    }
+
+    .modern-card.green {
+        background: linear-gradient(135deg, #2ecb77, #58e69d);
+    }
+
+    .modern-card.pink {
+        background: linear-gradient(135deg, #ff4fa7, #ff7cc7);
+    }
+
+    .modern-card.cyan {
+        background: linear-gradient(135deg, #07c8f9, #4be3ff);
+    }
+
+    .modern-card.red {
+        background: linear-gradient(135deg, #ff4b4b, #ff7676);
+    }
+
+    .modern-card.yellow {
+        background: linear-gradient(135deg, #f9c80e, #ffd75e);
+    }
+
+    /* Dark mode */
+    body.dark-mode .modern-card {
+        border: 1px solid rgba(255,255,255,0.15);
+    }
+</style>
