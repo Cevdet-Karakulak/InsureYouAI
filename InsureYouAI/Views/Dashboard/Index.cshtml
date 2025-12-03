@@ -16,8 +16,7 @@
 </div><!--end row-->
 @await Component.InvokeAsync("_DashboardSubWidgetsComponentPartial")
 
-@* @await Component.InvokeAsync("_DashboardRadialChartComponentPartial")
- *@
+
 
 
 
@@ -71,95 +70,8 @@
             </div>
         </div>
     </div>
-    <div class="col-12 col-lg-6 col-xl-6 d-flex">
-        <div class="card rounded-4 w-100">
-            <div class="card-body">
-                <div class="d-flex align-items-center mb-3">
-                    <h6 class="mb-0">Top Selling Products</h6>
-                    <div class="fs-5 ms-auto dropdown">
-                        <div class="dropdown-toggle dropdown-toggle-nocaret cursor-pointer" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></div>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="">
-                    <div class="d-flex align-items-start gap-3">
-                        <div class="product-box border">
-                            <img src="assets/images/products/05.png" alt="product img">
-                        </div>
-                        <div class="flex-grow-1">
-                            <div class="progress-wrapper">
-                                <p class="my-2">iPhone 11 - A24512 <span class="float-end">(4,216 Orders) <span class="ms-3 fw-bold">42%</span></span></p>
-                                <div class="progress" style="height: 4px;">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 42%"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="d-flex align-items-start gap-3">
-                        <div class="product-box border">
-                            <img src="assets/images/products/07.png" alt="product img">
-                        </div>
-                        <div class="flex-grow-1">
-                            <div class="progress-wrapper">
-                                <p class="my-2">iPhone 11 - A24512 <span class="float-end">(4,216 Orders) <span class="ms-3 fw-bold">42%</span></span></p>
-                                <div class="progress" style="height: 4px;">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 42%"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="d-flex align-items-start gap-3">
-                        <div class="product-box border">
-                            <img src="assets/images/products/09.png" alt="product img">
-                        </div>
-                        <div class="flex-grow-1">
-                            <div class="progress-wrapper">
-                                <p class="my-2">iPhone 11 - A24512 <span class="float-end">(4,216 Orders) <span class="ms-3 fw-bold">42%</span></span></p>
-                                <div class="progress" style="height: 4px;">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 42%"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="d-flex align-items-start gap-3">
-                        <div class="product-box border">
-                            <img src="assets/images/products/02.png" alt="product img">
-                        </div>
-                        <div class="flex-grow-1">
-                            <div class="progress-wrapper">
-                                <p class="my-2">iPhone 11 - A24512 <span class="float-end">(4,216 Orders) <span class="ms-3 fw-bold">42%</span></span></p>
-                                <div class="progress" style="height: 4px;">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 42%"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="d-flex align-items-start gap-3">
-                        <div class="product-box border">
-                            <img src="assets/images/products/04.png" alt="product img">
-                        </div>
-                        <div class="flex-grow-1">
-                            <div class="progress-wrapper">
-                                <p class="my-2">iPhone 11 - A24512 <span class="float-end">(4,216 Orders) <span class="ms-3 fw-bold">42%</span></span></p>
-                                <div class="progress" style="height: 4px;">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 42%"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    @await Component.InvokeAsync("_DashboardPolicyTypesComponentPartial")
+
 
 </div><!--end row-->
 @await Component.InvokeAsync("_DashboardSubChartsComponentPartial")
@@ -168,119 +80,9 @@
 
 <div class="row">
     @await Component.InvokeAsync("_DashboardCommentListComponentPartial")
-    <div class="col-12 col-lg-6 col-xl-6 d-flex">
-        <div class="card rounded-4 w-100">
-            <div class="card-header bg-transparent">
-                <div class="d-flex align-items-center">
-                    <h6 class="mb-0">Chat Box</h6>
-                    <div class="fs-5 ms-auto dropdown">
-                        <div class="dropdown-toggle dropdown-toggle-nocaret cursor-pointer" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></div>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body p-0">
-                <div class="chat-talk d-flex flex-column gap-4 p-3">
-                    <div class="d-flex align-items-end gap-3">
-                        <div class="chat-user">
-                            <img src="assets/images/avatars/avatar-7.png" width="55" height="55" class="rounded-circle" alt="">
-                        </div>
-                        <div class="chat-msg border flex-grow-1 rounded-4 p-3">
-                            Hello , Codervent
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-end gap-3">
-                        <div class="chat-msg border flex-grow-1 rounded-4 p-3 bg-light">
-                            Hello , Codervent
-                        </div>
-                        <div class="chat-user">
-                            <img src="assets/images/avatars/avatar-7.png" width="55" height="55" class="rounded-circle" alt="">
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-end gap-3">
-                        <div class="chat-user">
-                            <img src="assets/images/avatars/avatar-7.png" width="55" height="55" class="rounded-circle" alt="">
-                        </div>
-                        <div class="chat-msg border flex-grow-1 rounded-4 p-3">
-                            Hello , Codervent
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-end gap-3">
-                        <div class="chat-msg border flex-grow-1 rounded-4 p-3 bg-light">
-                            Hello , Codervent
-                        </div>
-                        <div class="chat-user">
-                            <img src="assets/images/avatars/avatar-7.png" width="55" height="55" class="rounded-circle" alt="">
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-end gap-3">
-                        <div class="chat-user">
-                            <img src="assets/images/avatars/avatar-7.png" width="55" height="55" class="rounded-circle" alt="">
-                        </div>
-                        <div class="chat-msg border flex-grow-1 rounded-4 p-3">
-                            Hello , Codervent
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-end gap-3">
-                        <div class="chat-msg border flex-grow-1 rounded-4 p-3 bg-light">
-                            Hello , Codervent
-                        </div>
-                        <div class="chat-user">
-                            <img src="assets/images/avatars/avatar-7.png" width="55" height="55" class="rounded-circle" alt="">
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-end gap-3">
-                        <div class="chat-user">
-                            <img src="assets/images/avatars/avatar-7.png" width="55" height="55" class="rounded-circle" alt="">
-                        </div>
-                        <div class="chat-msg border flex-grow-1 rounded-4 p-3">
-                            Hello , Codervent
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-end gap-3">
-                        <div class="chat-msg border flex-grow-1 rounded-4 p-3 bg-light">
-                            Hello , Codervent
-                        </div>
-                        <div class="chat-user">
-                            <img src="assets/images/avatars/avatar-7.png" width="55" height="55" class="rounded-circle" alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer bg-transparent">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Type your message">
-                        <button class="btn btn-primary" type="button"><i class="bi bi-send"></i></button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
+    @await Component.InvokeAsync("_DashboardAppUserQuickViewTableComponentPartial")
 
 
-</div><!--end row-->
-<!-- JS -->
-<script src="/snacked/ltr/assets/js/bootstrap.bundle.min.js"></script>
-<script src="/snacked/ltr/assets/js/jquery.min.js"></script>
-<script src="/snacked/ltr/assets/plugins/simplebar/js/simplebar.min.js"></script>
-<script src="/snacked/ltr/assets/plugins/metismenu/js/metisMenu.min.js"></script>
-<script src="/snacked/ltr/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
-<script src="/snacked/ltr/assets/js/pace.min.js"></script>
+</div>  
+@await Component.InvokeAsync("_DashboardScriptsComponentPartial")
 
-<script src="/snacked/ltr/assets/plugins/chartjs/js/Chart.min.js"></script>
-<script src="/snacked/ltr/assets/plugins/chartjs/js/Chart.extension.js"></script>
-<script src="/snacked/ltr/assets/plugins/apexcharts-bundle/js/apexcharts.min.js"></script>
-<script src="/snacked/ltr/assets/plugins/vectormap/jquery-jvectormap-2.0.2.min.js"></script>
-<script src="/snacked/ltr/assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js"></script>
-
-<script src="/snacked/ltr/assets/js/app.js"></script>
-<script src="/snacked/ltr/assets/js/index.js"></script>
-<script>
-    new PerfectScrollbar(".review-list")
-    new PerfectScrollbar(".chat-talk")
-</script>
