@@ -13,67 +13,21 @@
 
     @await Component.InvokeAsync("_DashboardSecondChartComponentPartial")
 
-</div><!--end row-->
+</div>
+
 @await Component.InvokeAsync("_DashboardSubWidgetsComponentPartial")
 
+<div class="row g-3">
 
-
-
-
-<div class="row">
-    <div class="col-12 col-lg-6 col-xl-6 d-flex">
-        <div class="card rounded-4 w-100">
-            <div class="card-body">
-                <div class="d-flex align-items-center mb-3">
-                    <h6 class="mb-0">Sales By Countries</h6>
-                    <div class="fs-5 ms-auto dropdown">
-                        <div class="dropdown-toggle dropdown-toggle-nocaret cursor-pointer" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></div>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div id="world-map" style="height: 242px;"></div>
-            </div>
-            <div class="table-responsive">
-                <table class="table align-items-center">
-                    <tbody>
-                        <tr>
-                            <td><i class="flag-icon flag-icon-gb"></i></td>
-                            <td><i class="bi bi-circle-fill me-2 text-primary"></i> Russia</td>
-                            <td><p class="mb-0">Sales: <span class="fw-bold">28,000</span></p></td>
-                            <td>40%</td>
-                        </tr>
-                        <tr>
-                            <td><i class="flag-icon flag-icon-au"></i></td>
-                            <td><i class="bi bi-circle-fill me-2 text-warning"></i> Australia</td>
-                            <td><p class="mb-0">Sales: <span class="fw-bold">58,000</span></p></td>
-                            <td>60%</td>
-                        </tr>
-                        <tr>
-                            <td><i class="flag-icon flag-icon-us"></i></td>
-                            <td><i class="bi bi-circle-fill me-2 text-success"></i> United States</td>
-                            <td><p class="mb-0">Sales: <span class="fw-bold">72,000</span></p></td>
-                            <td>30%</td>
-                        </tr>
-                        <tr>
-                            <td><i class="flag-icon flag-icon-in"></i></td>
-                            <td><i class="bi bi-circle-fill me-2 text-secondary"></i> India</td>
-                            <td><p class="mb-0">Sales: <span class="fw-bold">68,000</span></p></td>
-                            <td>55%</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    <div class="col-12 col-lg-6 col-xl-6">
+        @await Component.InvokeAsync("_DashboardForecastingPoliciesSelesComponentPartial")
     </div>
-    @await Component.InvokeAsync("_DashboardPolicyTypesComponentPartial")
 
+    <div class="col-12 col-lg-6 col-xl-6">
+        @await Component.InvokeAsync("_DashboardPolicyTypesComponentPartial")
+    </div>
 
-</div><!--end row-->
+</div>
 @await Component.InvokeAsync("_DashboardSubChartsComponentPartial")
 
 

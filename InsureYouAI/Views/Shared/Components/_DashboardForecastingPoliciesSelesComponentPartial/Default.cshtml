@@ -1,7 +1,14 @@
-﻿@model List<PolicyGroupViewModel>
+﻿@model List<(string Type, float Forecast)>
 
 @{
-    var total = Model.Sum(x => x.Count);
+    var order = new Dictionary<string, int>
+    {
+        { "Egitim", 1 },
+        { "Kasko", 2 },
+        { "Konut", 3 },
+        { "Sağlık", 4 },
+        { "Trafik", 5 }
+    };
 
     string GetIcon(string type) =>
         type switch
@@ -13,6 +20,8 @@
             "Trafik" => "/policyicons/trafik.png",
             _ => "/policyicons/egitim.png"
         };
+
+    float total = Model.Sum(x => x.Forecast);
 }
 
 <style>
@@ -53,8 +62,7 @@
     <div class="card-body d-flex flex-column">
 
         <div class="d-flex align-items-center mb-3">
-            <h6 class="mb-0 fw-bold">En Çok Satılan Poliçeler</h6>
-
+            <h6 class="mb-0 fw-bold">2025 Aralık Ayı Tahmini Poliçe Satışları (ML.NET)</h6>
             <div class="fs-5 ms-auto dropdown">
                 <div class="dropdown-toggle dropdown-toggle-nocaret cursor-pointer" data-bs-toggle="dropdown">
                     <i class="bi bi-three-dots"></i>
@@ -64,28 +72,28 @@
 
         <div class="flex-grow-1">
 
-            @foreach (var item in Model)
+            @foreach (var item in Model.OrderBy(x => order[x.Type]))
             {
-                var percentage = (int)((item.Count * 100.0) / total);
+                int adet = (int)item.Forecast;
+                int yuzde = total > 0 ? (int)((item.Forecast / total) * 100) : 0;
 
                 <div class="d-flex align-items-start gap-3 policy-item">
-                    <img src="@GetIcon(item.PolicyType)" class="policy-icon" />
+                    <img src="@GetIcon(item.Type)" class="policy-icon" />
 
                     <div class="flex-grow-1">
 
-                        <p class="my-1 d-flex justify-content-between">
-                            <span class="fw-semibold">@item.PolicyType</span>
+                        <p class="d-flex justify-content-between my-1">
+                            <span class="fw-semibold">@item.Type</span>
 
-                            <span>
-                                (@item.Count Police Satışı)
-                                <b class="text-dark">@percentage%</b>
+                            <span class="text-dark">
+                                @adet adet • <b>@yuzde%</b>
                             </span>
                         </p>
 
                         <div class="progress policy-progress">
-                            <div class="progress-bar bg-primary policy-progress-bar"
+                            <div class="progress-bar bg-success policy-progress-bar"
                                  role="progressbar"
-                                 style="width:@percentage%">
+                                 style="width:@yuzde%">
                             </div>
                         </div>
                     </div>
