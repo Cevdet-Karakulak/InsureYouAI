@@ -1,93 +1,83 @@
 ﻿<div class="col-12 col-lg-6 col-xl-6 d-flex">
-    <div class="card rounded-4 w-100">
+    <div class="card rounded-4 w-100 shadow-sm d-flex flex-column">
+
+        <!-- HEADER -->
         <div class="card-header bg-transparent">
             <div class="d-flex align-items-center">
-                <h6 class="mb-0">Chat Box</h6>
-                <div class="fs-5 ms-auto dropdown">
-                    <div class="dropdown-toggle dropdown-toggle-nocaret cursor-pointer" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></div>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
+                <h6 class="mb-0 fw-bold">En Popüler Kullanıcılar ve Müşteriler</h6>
+                <div class="ms-auto">
+                    <i class="bi bi-three-dots fs-5 cursor-pointer"></i>
                 </div>
             </div>
         </div>
-        <div class="card-body p-0">
-            <div class="chat-talk d-flex flex-column gap-4 p-3">
-                <div class="d-flex align-items-end gap-3">
-                    <div class="chat-user">
-                        <img src="assets/images/avatars/avatar-7.png" width="55" height="55" class="rounded-circle" alt="">
-                    </div>
-                    <div class="chat-msg border flex-grow-1 rounded-4 p-3">
-                        Hello , Codervent
-                    </div>
-                </div>
-                <div class="d-flex align-items-end gap-3">
-                    <div class="chat-msg border flex-grow-1 rounded-4 p-3 bg-light">
-                        Hello , Codervent
-                    </div>
-                    <div class="chat-user">
-                        <img src="assets/images/avatars/avatar-7.png" width="55" height="55" class="rounded-circle" alt="">
-                    </div>
-                </div>
-                <div class="d-flex align-items-end gap-3">
-                    <div class="chat-user">
-                        <img src="assets/images/avatars/avatar-7.png" width="55" height="55" class="rounded-circle" alt="">
-                    </div>
-                    <div class="chat-msg border flex-grow-1 rounded-4 p-3">
-                        Hello , Codervent
-                    </div>
-                </div>
-                <div class="d-flex align-items-end gap-3">
-                    <div class="chat-msg border flex-grow-1 rounded-4 p-3 bg-light">
-                        Hello , Codervent
-                    </div>
-                    <div class="chat-user">
-                        <img src="assets/images/avatars/avatar-7.png" width="55" height="55" class="rounded-circle" alt="">
-                    </div>
-                </div>
-                <div class="d-flex align-items-end gap-3">
-                    <div class="chat-user">
-                        <img src="assets/images/avatars/avatar-7.png" width="55" height="55" class="rounded-circle" alt="">
-                    </div>
-                    <div class="chat-msg border flex-grow-1 rounded-4 p-3">
-                        Hello , Codervent
-                    </div>
-                </div>
-                <div class="d-flex align-items-end gap-3">
-                    <div class="chat-msg border flex-grow-1 rounded-4 p-3 bg-light">
-                        Hello , Codervent
-                    </div>
-                    <div class="chat-user">
-                        <img src="assets/images/avatars/avatar-7.png" width="55" height="55" class="rounded-circle" alt="">
-                    </div>
-                </div>
-                <div class="d-flex align-items-end gap-3">
-                    <div class="chat-user">
-                        <img src="assets/images/avatars/avatar-7.png" width="55" height="55" class="rounded-circle" alt="">
-                    </div>
-                    <div class="chat-msg border flex-grow-1 rounded-4 p-3">
-                        Hello , Codervent
-                    </div>
-                </div>
-                <div class="d-flex align-items-end gap-3">
-                    <div class="chat-msg border flex-grow-1 rounded-4 p-3 bg-light">
-                        Hello , Codervent
-                    </div>
-                    <div class="chat-user">
-                        <img src="assets/images/avatars/avatar-7.png" width="55" height="55" class="rounded-circle" alt="">
-                    </div>
-                </div>
-            </div>
-            <div class="card-footer bg-transparent">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Type your message">
-                    <button class="btn btn-primary" type="button"><i class="bi bi-send"></i></button>
-                </div>
-            </div>
 
+        <!-- BODY -->
+        <div class="card-body p-0 flex-grow-1 overflow-hidden">
+            <div class="customer-scroll h-100">
+
+                @foreach (var item in Model)
+                {
+                    <div class="d-flex align-items-center px-4 py-3 border-bottom customer-row">
+
+                        <img src="@item.ImageUrl"
+                             class="rounded-circle me-3"
+                             width="48" height="48" />
+
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1 fw-semibold">@item.FullName</h6>
+
+                            <span class="badge bg-light text-dark me-2">
+                                Poliçe: @item.PolicyCount
+                            </span>
+                            <span class="badge bg-success-subtle text-success">
+                                @item.TotalBalance.ToString("N2") ₺
+                            </span>
+                        </div>
+
+                        <a href="/AppUser/UserProfileWithAI/@item.UserId"
+                           class="btn btn-outline-warning rounded-pill px-3 d-flex align-items-center gap-1 detail-btn">
+                            <span class="fw-semibold">Detaylar</span>
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                }
+
+            </div>
         </div>
     </div>
 </div>
+<style>
+    .customer-scroll {
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .customer-row {
+        transition: background-color .2s ease;
+    }
+
+    /* Scrollbar sade */
+    .customer-scroll::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .customer-scroll::-webkit-scrollbar-thumb {
+        background-color: #d1d1d1;
+        border-radius: 10px;
+    }
+
+    .customer-scroll {
+        scrollbar-width: thin;
+        scrollbar-color: #d1d1d1 transparent;
+    }
+
+    .detail-btn {
+        transition: all .2s ease;
+        white-space: nowrap; /* Satır kırılmasını önler */
+    }
+
+        .detail-btn:hover {
+            background-color: #ffc107;
+            color: #000;
+        }
+</style>

@@ -24,6 +24,9 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 
 var app = builder.Build();
 
+app.UseExceptionHandler("/Errors/500");
+app.UseStatusCodePagesWithReExecute("/Errors/Page{0}");
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
