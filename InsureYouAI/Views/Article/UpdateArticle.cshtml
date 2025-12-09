@@ -6,30 +6,40 @@
 
 <div class="card">
     <div class="card-body">
-        <div class="d-flex align-items-center">
-            <h5 class="mb-0">Makale Düzenleme Sayfası</h5>
-        </div>
+        <h5 class="mb-3">Makale Düzenleme Sayfası</h5>
+
         <form method="post">
             <input type="hidden" asp-for="ArticleId" />
-            <label for="Title" class="form-label">Başlık</label>
-            <input type="text" class="form-control mb-3" asp-for="Title" />
-            <br />
-            <label for="CoverImageUrl" class="form-label">Kapak Fotoğrafı</label>
-            <input type="text" class="form-control mb-3" asp-for="CoverImageUrl" />
-            <br />
-            <label for="MainCoverImageUrl" class="form-label">Makale Detay Kapak Görseli</label>
-            <input type="text" class="form-control mb-3" asp-for="MainCoverImageUrl" />
-            <br />
 
-            <label for="CategoryId" class="form-label">Kategori</label>
-            <input type="text" class="form-control mb-3" asp-for="CategoryId" />
-            <br />
+            <label class="form-label">Başlık</label>
+            <input class="form-control mb-3" asp-for="Title" />
+
+            <label class="form-label">Kapak Fotoğrafı</label>
+            <input class="form-control mb-3" asp-for="CoverImageUrl" />
+
+            <label class="form-label">Makale Detay Kapak Görseli</label>
+            <input class="form-control mb-3" asp-for="MainCoverImageUrl" />
 
             <label class="form-label">Kategori</label>
-            <textarea class="form-control mb-3" asp-for="Content" rows="15" ></textarea>
-            <br />
+            <select asp-for="CategoryId" class="form-control mb-3">
+                @foreach (var item in ViewBag.Categories)
+                {
+                    <option value="@item.CategoryId"
+                            selected="@(item.CategoryId == Model.CategoryId)">
+                        @item.CategoryName
+                    </option>
+                }
+            </select>
 
-            <button type="submit" class="btn btn-success"> Makaleyi Güncelle </button>
+            <label class="form-label">Makale İçeriği</label>
+            <textarea class="form-control mb-3" asp-for="Content" rows="15"></textarea>
+
+            <button class="btn btn-success">Makaleyi Güncelle</button>
         </form>
     </div>
 </div>
+
+<script src="https://cdn.ckeditor.com/4.20.2/full-all/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace("Content", { height: 400 });
+</script>

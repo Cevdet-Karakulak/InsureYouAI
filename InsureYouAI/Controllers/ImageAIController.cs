@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using InsureYouAI.Dtos;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
@@ -8,9 +10,14 @@ namespace InsureYouAI.Controllers
     public class ImageAIController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        public ImageAIController(IHttpClientFactory httpClientFactory)
+        private readonly IConfiguration _configuration;
+
+        public ImageAIController(
+            IHttpClientFactory httpClientFactory,
+            IConfiguration configuration)
         {
             _httpClientFactory = httpClientFactory;
+            _configuration = configuration;
         }
 
         [HttpGet]
@@ -20,35 +27,89 @@ namespace InsureYouAI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateImageWithOpenAI(string prompt)
+        public async Task<IActionResult> CreateImageAjax([FromBody] ImagePromptDto dto)
         {
-            var apiKey = "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";
-            var client = _httpClientFactory.CreateClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+            if (dto == null || string.IsNullOrWhiteSpace(dto.Prompt))
+                return BadRequest("Prompt boş.");
 
-            var requestData = new
+            var apiKey = _configuration["OpenAI:ApiKey"];
+            if (string.IsNullOrWhiteSpace(apiKey))
+                return BadRequest("OpenAI API Key bulunamadı.");
+
+            var client = _httpClientFactory.CreateClient();
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", apiKey);
+
+            var requestBody = new
             {
-                prompt = prompt,
-                n = 1,
-                size = "512x512"
+                model = "gpt-image-1",
+                prompt = dto.Prompt,
+                size = "1024x1024"
             };
 
-            var content = new StringContent(JsonSerializer.Serialize(requestData), Encoding.UTF8,
-    "application/json");
+            var response = await client.PostAsync(
+                "https://api.openai.com/v1/images/generations",
+                new StringContent(
+                    JsonSerializer.Serialize(requestBody),
+                    Encoding.UTF8,
+                    "application/json"
+                )
+            );
 
-            var response = await client.PostAsync("https://api.openai.com/v1/images/generations", content);
-
+            var responseText = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
+                return BadRequest(responseText);
+
+            using var doc = JsonDocument.Parse(responseText);
+            var data = doc.RootElement.GetProperty("data")[0];
+
+            byte[] imageBytes;
+
+            // ✅ URL veya BASE64 destek
+            if (data.TryGetProperty("url", out var urlProp))
             {
-                ViewBag.error = "OpenAI Hatası: " + await response.Content.ReadAsStringAsync();
-                return View();
+                var imageUrl = urlProp.GetString();
+                imageBytes = await client.GetByteArrayAsync(imageUrl);
+            }
+            else if (data.TryGetProperty("b64_json", out var b64Prop))
+            {
+                imageBytes = Convert.FromBase64String(b64Prop.GetString());
+            }
+            else
+            {
+                return BadRequest("OpenAI görsel verisi bulunamadı.");
             }
 
-            var json = await response.Content.ReadAsStringAsync();
-            var result = JsonDocument.Parse(json);
-            var imageUrl = result.RootElement.GetProperty("data")[0].GetProperty("url").GetString();
+            // ✅ wwwroot/AIImage kaydet
+            var folder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "AIImage");
+            Directory.CreateDirectory(folder);
 
-            return View(model: imageUrl);
+            var fileName = $"ai_{DateTime.Now:yyyyMMdd_HHmmss}.png";
+            var filePath = Path.Combine(folder, fileName);
+            await System.IO.File.WriteAllBytesAsync(filePath, imageBytes);
+
+            return Json(new { imageUrl = $"/AIImage/{fileName}" });
+        }
+        [HttpGet]
+        public IActionResult Gallery()
+        {
+            var folderPath = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                "wwwroot",
+                "AIImage"
+            );
+
+            var images = new List<string>();
+
+            if (Directory.Exists(folderPath))
+            {
+                images = Directory.GetFiles(folderPath)
+                    .OrderByDescending(f => f)
+                    .Select(file => "/AIImage/" + Path.GetFileName(file))
+                    .ToList();
+            }
+
+            return View(images);
         }
     }
 }

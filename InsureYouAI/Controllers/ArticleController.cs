@@ -1,6 +1,7 @@
 ﻿using InsureYouAI.Context;
 using InsureYouAI.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Net.Http.Headers;
 
 namespace InsureYouAI.Controllers;
@@ -17,16 +18,32 @@ public class ArticleController : Controller
 
     public IActionResult ArticleList()
     {
-        var values = _context.Articles.ToList();
+        ViewBag.ControllerName = "Makaleler";
+        ViewBag.PageName = "Makale Listesi";
+        var values = _context.Articles.Include(x=>x.AppUser).ToList();
         return View(values);
     }
     [HttpGet]
     public IActionResult CreateArticle()
     {
+        ViewBag.ControllerName = "Makaleler";
+        ViewBag.PageName = "Yeni Makale Oluştur";
+
         ViewBag.Categories = _context.Categories
-            .Select(x => new { x.CategoryId, x.CategoryName })
+            .Select(x => new
+            {
+                x.CategoryId,
+                x.CategoryName
+            })
             .ToList();
 
+        ViewBag.Authors = _context.Users
+            .Select(x => new
+            {
+                x.Id,
+                FullName = x.Name + " " + x.Surname
+            })
+            .ToList();
         return View();
     }
     [HttpPost]
@@ -38,18 +55,42 @@ public class ArticleController : Controller
         return RedirectToAction("ArticleList");
     }
     [HttpGet]
-    public IActionResult UpdateArticle(int Id)
+    public IActionResult UpdateArticle(int id)
     {
-        var value = _context.Articles.Find(Id);
-        return View(value);
+        ViewBag.ControllerName = "Makaleler";
+        ViewBag.PageName = "Makale Güncelle";
+        var article = _context.Articles
+            .Include(x => x.AppUser)
+            .FirstOrDefault(x => x.ArticleId == id);
+
+        if (article == null) return NotFound();
+
+        ViewBag.Categories = _context.Categories
+            .Select(x => new { x.CategoryId, x.CategoryName })
+            .ToList();
+
+        ViewBag.Authors = _context.Users
+            .Select(x => new { x.Id, FullName = x.Name + " " + x.Surname })
+            .ToList();
+
+        return View(article);
     }
     [HttpPost]
-    public IActionResult UpdateArticle(Article Article)
+    public IActionResult UpdateArticle(Article model)
     {
-        _context.Articles.Update(Article);
+        var article = _context.Articles.FirstOrDefault(x => x.ArticleId == model.ArticleId);
+        if (article == null) return NotFound();
+
+        article.Title = model.Title;
+        article.Content = model.Content;
+        article.CategoryId = model.CategoryId;
+        article.CoverImageUrl = model.CoverImageUrl;
+        article.MainCoverImageUrl = model.MainCoverImageUrl;
+
         _context.SaveChanges();
         return RedirectToAction("ArticleList");
     }
+
 
 
     public IActionResult DeleteArticle(int Id)
@@ -64,6 +105,8 @@ public class ArticleController : Controller
     [HttpGet]
     public IActionResult CreateArticleWithOpenAI()
     {
+        ViewBag.ControllerName = "Makaleler";
+        ViewBag.PageName = "Yapay Zeka Makale Oluşturucu";
         return View();
     }
 

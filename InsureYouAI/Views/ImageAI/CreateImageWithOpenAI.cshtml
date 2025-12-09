@@ -1,29 +1,64 @@
-﻿@model string
-
-@{
-    ViewData["Title"] = "CreateImageWithOpenAI";
+﻿@{
+    ViewData["Title"] = "AI Görsel Oluştur (OpenAI)";
     Layout = "~/Views/AdminLayout/Index.cshtml";
 }
 
-
 <div class="card">
     <div class="card-body">
-        <div class="d-flex align-items-center">
-            <h5 class="mb-0">OpenAI ile Görsel Oluşturma</h5>
+        <h5>AI Görsel Oluşturma (OpenAI)</h5>
+
+        <input type="text"
+               id="prompt"
+               class="form-control"
+               placeholder="Örn: Modern cartoon donkey illustration" />
+
+        <button class="btn btn-primary mt-2" onclick="generateImage()">
+            Görsel Oluştur
+        </button>
+
+        <div id="loading" class="text-info mt-3 d-none">
+            Görsel oluşturuluyor...
         </div>
-        <form method="post">
-            <label>Prompt Girişi Yapınız: </label>
-            <input type="text" name="prompt" required class="form-control" />
-            <br />
-            <button class="btn btn-primary">Görsel Oluştur</button>
-        </form>
 
-        @ViewBag.error
-
-        @if (Model != null)
-        {
-            <h3>Oluşturulan Görsel:</h3>
-            <img src="@Model" alt="OpenAI Görseli" style="max-width:512px;" />
-        }
+        <div id="result" class="mt-4 d-none">
+            <h6>Oluşturulan Görsel</h6>
+            <img id="imageResult"
+                 class="img-fluid rounded shadow"
+                 style="max-width:512px;" />
+        </div>
     </div>
 </div>
+
+<script>
+    function generateImage() {
+        const prompt = document.getElementById("prompt").value.trim();
+        if (!prompt) {
+            alert("Prompt boş olamaz");
+            return;
+        }
+
+        document.getElementById("loading").classList.remove("d-none");
+        document.getElementById("result").classList.add("d-none");
+
+        fetch("/ImageAI/CreateImageAjax", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ prompt })
+        })
+        .then(async res => {
+            const text = await res.text();
+            if (!res.ok) throw new Error(text);
+            return JSON.parse(text);
+        })
+        .then(data => {
+            document.getElementById("imageResult").src = data.imageUrl;
+            document.getElementById("result").classList.remove("d-none");
+        })
+        .catch(err => {
+            alert("Sunucu Hatası:\n\n" + err.message);
+        })
+        .finally(() => {
+            document.getElementById("loading").classList.add("d-none");
+        });
+    }
+</script>

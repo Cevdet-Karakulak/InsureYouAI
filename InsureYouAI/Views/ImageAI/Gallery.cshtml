@@ -1,0 +1,55 @@
+﻿@model List<string>
+
+@{
+    ViewData["Title"] = "AI Görsel Galerisi";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<h4 class="mb-4">🖼️ AI ile Üretilen Görseller</h4>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        Henüz üretilmiş görsel yok.
+    </div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+        @foreach (var img in Model)
+        {
+            <div class="col">
+                <div class="card shadow-sm border-0 h-100">
+                    <img src="@img"
+                         class="card-img-top rounded"
+                         style="object-fit:cover; height:230px;"
+                         onclick="openImage('@img')"
+                         role="button" />
+
+                    <div class="card-body text-center">
+                        <a href="@img" download
+                           class="btn btn-sm btn-outline-secondary">
+                            İndir
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<!-- Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content bg-transparent border-0">
+            <img id="modalImage" class="img-fluid rounded shadow" />
+        </div>
+    </div>
+</div>
+
+<script>
+    function openImage(src) {
+        document.getElementById("modalImage").src = src;
+        new bootstrap.Modal(document.getElementById("imageModal")).show();
+    }
+</script>

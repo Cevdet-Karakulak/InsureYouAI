@@ -20,6 +20,8 @@ namespace InsureYouAI.Controllers
         }
         public IActionResult UserList()
         {
+            ViewBag.ControllerName = "Kullanıcılar";
+            ViewBag.PageName = "Kullanıcılar Listesi";
             var values = _userManager.Users.ToList();
             return View(values);
         }

@@ -33,6 +33,14 @@
                     <option value="@item.CategoryId">@item.CategoryName</option>
                 }
             </select>
+            <label for="AppUserId" class="form-label">Yazar Adı</label>
+            <select asp-for="AppUserId" class="form-control mb-3">
+                <option value="">Yazar Seçin</option>
+                @foreach (var item in ViewBag.Authors)
+                {
+                    <option value="@item.Id">@item.FullName</option>
+                }
+            </select>
             <br />
 
             <label class="form-label">İçerik</label>

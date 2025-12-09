@@ -17,6 +17,8 @@ public class AboutController : Controller
 
     public IActionResult AboutList()
     {
+        ViewBag.ControllerName = "Hakkımızda";
+        ViewBag.PageName = "Hakkımızda Listesi";
         var values = _context.Abouts.ToList();
         return View(values);
     }
