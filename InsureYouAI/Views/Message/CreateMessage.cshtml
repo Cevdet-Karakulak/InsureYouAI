@@ -9,23 +9,30 @@
         <div class="d-flex align-items-center">
             <h5 class="mb-0">Mesaj Girişi</h5>
         </div>
-        <form method="post">
-            <label for="NameSurname" class="form-label">Gönderici Adı Soyadı Adı</label>
-            <input type="text" class="form-control mb-3" asp-for="NameSurname" />
-            <br />
-            <label for="Email" class="form-label">Gönderici Email Adresi</label>
-            <input type="email" class="form-control mb-3" asp-for="Email" />
-            <br />
 
-            <label for="Subject" class="form-label">Konu</label>
-            <input type="text" class="form-control mb-3" asp-for="Subject" />
-            <br />
+        <form asp-action="CreateMessage"
+              asp-controller="Message"
+              method="post">
 
-            <label for="MessagetDetail" class="form-label">Detail</label>
-            <input type="text" class="form-control mb-3" asp-for="MessagetDetail" />
-            <br />
+            @Html.AntiForgeryToken()
 
-            <button type="submit" class="btn btn-primary"> Mesajı Kaydet </button>
+            <label class="form-label">Gönderici Adı Soyadı</label>
+            <input class="form-control mb-3" asp-for="NameSurname" />
+
+            <label class="form-label">Gönderici Email</label>
+            <input class="form-control mb-3" asp-for="Email" />
+
+            <label class="form-label">Konu</label>
+            <input class="form-control mb-3" asp-for="Subject" />
+
+            <label class="form-label">Mesaj Detayı</label>
+            <textarea class="form-control mb-3"
+                      asp-for="MessagetDetail"
+                      rows="5"></textarea>
+
+            <button type="submit" class="btn btn-primary">
+                Mesajı Kaydet
+            </button>
         </form>
     </div>
 </div>

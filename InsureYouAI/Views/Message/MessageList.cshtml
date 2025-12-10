@@ -2,61 +2,175 @@
 @{
     ViewData["Title"] = "MessageList";
     Layout = "~/Views/AdminLayout/Index.cshtml";
+
     int count = 0;
+
+    string GetPriorityClass(string priority)
+    {
+        return priority switch
+        {
+            "Acil" => "bg-danger text-light fw-bold",
+            "Orta" => "bg-warning text-dark fw-bold",
+            "Düşük" => "bg-secondary text-light",
+            _ => "bg-light text-dark"
+        };
+    }
+
+    string GetBadgeClass(string category)
+    {
+        category = category?.Trim();
+
+        return category switch
+        {
+            "Sağlık Sigortası" => "bg-success",
+            "Tamamlayıcı Sağlık Sigortası" => "bg-success",
+            "Hayat Sigortası" => "bg-primary",
+            "Ferdi Kaza Sigortası" => "bg-danger",
+            "Evcil Hayvan Sigortası" => "bg-info",
+            "Eğitim Sigortası" => "bg-warning",
+
+            "Araç Sigortası" => "bg-secondary",
+            "Kasko Sigortası" => "bg-dark",
+            "Trafik Sigortası" => "bg-warning",
+            "Nakliyat Sigortası" => "bg-primary",
+
+            "Konut Sigortası" => "bg-info",
+            "DASK (Zorunlu Deprem)" => "bg-danger",
+            "İş Yeri Sigortası" => "bg-secondary",
+            "Tarım Sigortası" => "bg-success",
+
+            "Yurt Dışı Seyahat Sigortası" => "bg-primary",
+            "Siber Güvenlik Sigortası" => "bg-danger",
+
+            _ => "bg-light text-dark"
+        };
+    }
 }
 
-<div class="card">
+<style>
+    /* Modern Tablo */
+    table tbody tr:hover {
+        background-color: #f5f7fa;
+        transition: 0.2s;
+    }
+
+    .table thead th {
+        background: #eef2f6 !important;
+        font-weight: 600;
+        color: #4a4a4a;
+    }
+
+    .search-bar input {
+        border-radius: 12px;
+        padding-left: 40px;
+    }
+
+    .search-bar .icon {
+        position: absolute;
+        top: 50%;
+        left: 12px;
+        transform: translateY(-50%);
+        color: #6c757d;
+    }
+
+    .action-icon {
+        font-size: 18px;
+        padding: 6px;
+        border-radius: 8px;
+        transition: 0.2s;
+    }
+
+        .action-icon:hover {
+            transform: scale(1.15);
+            cursor: pointer;
+        }
+</style>
+
+<div class="card shadow-sm border-0">
     <div class="card-body">
-        <div class="d-flex align-items-center">
-            <h5 class="mb-0">Mesaj Listesi</h5>
-            <form class="ms-auto position-relative">
-                <div class="position-absolute top-50 translate-middle-y search-icon px-3"><i class="bi bi-search"></i></div>
-                <input class="form-control ps-5" type="text" placeholder="search">
+
+        <div class="d-flex align-items-center mb-3">
+            <h4 class="fw-bold mb-0">Mesaj Listesi</h4>
+
+            <form class="ms-auto position-relative search-bar">
+                <i class="bi bi-search icon"></i>
+                <input class="form-control" type="text" placeholder="Mesajlarda ara...">
             </form>
         </div>
-        <div class="table-responsive mt-3">
-            <table class="table align-middle">
-                <thead class="table-secondary">
+
+        <div class="table-responsive">
+            <table class="table align-middle table-hover">
+                <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Ad Soyad</th>
-                        <th>Konu</th>
-                        <th>Email</th>
-                        <th>Tarih</th>
-                        <th>Durum</th>
-                        <th>Mesajı Aç</th>
-                        <th>Güncelle</th>
-                        <th>Sil</th>
+                        <th style="width: 40px;">#</th>
+                        <th style="width: 150px;">Ad Soyad</th>
+                        <th style="width: 140px;">Konu</th>
+                        <th style="width: 200px;">Email</th>
+                        <th style="width: 120px;">Tarih</th>
+                        <th style="width: 160px;">AI Kategori</th>
+                        <th style="width: 110px;">Öncelik</th>
+                        <th style="width: 110px;">Durum</th>
+                        <th style="width: 50px;">Aç</th>
+                        <th style="width: 50px;">Düzenle</th>
+                        <th style="width: 50px;">Sil</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     @foreach (var item in Model)
                     {
                         count++;
+
                         <tr>
                             <td>@count</td>
                             <td>@item.NameSurname</td>
                             <td>@item.Subject</td>
                             <td>@item.Email</td>
                             <td>@item.SendDate.ToString("dd-MMM-yyyy")</td>
+
                             <td>
-                                <a href="#" class="btn btn-warning">Durum </a>
+                                <span class="badge @GetBadgeClass(item.AiCategory)">
+                                    @item.AiCategory
+                                </span>
                             </td>
+
                             <td>
-                                <a href="/Default/Index" class="text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Mesajı Aç"><i class="bi bi-eye-fill"></i></a>
+                                <span class="badge @GetPriorityClass(item.Priority)">
+                                    @item.Priority
+                                </span>
                             </td>
+
                             <td>
-                                <a href="/Message/UpdateMessage/@item.MessageId" class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Düzenle"><i class="bi bi-pencil-fill"></i></a>
+                                <span class="badge @(item.IsRead ? "bg-success" : "bg-warning text-dark")">
+                                    @(item.IsRead ? "Okundu" : "Bekliyor")
+                                </span>
                             </td>
+
                             <td>
-                                <a href="/Message/DeleteMessage/@item.MessageId" class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Sil"><i class="bi bi-trash-fill"></i></a>
+                                <a href="/Message/Details/@item.MessageId" class="text-primary action-icon">
+                                    <i class="bi bi-eye-fill"></i>
+                                </a>
+                            </td>
+
+                            <td>
+                                <a href="/Message/UpdateMessage/@item.MessageId" class="text-warning action-icon">
+                                    <i class="bi bi-pencil-fill"></i>
+                                </a>
+                            </td>
+
+                            <td>
+                                <a href="/Message/DeleteMessage/@item.MessageId" class="text-danger action-icon">
+                                    <i class="bi bi-trash-fill"></i>
+                                </a>
                             </td>
                         </tr>
                     }
-
                 </tbody>
             </table>
-            <a href="/Message/CreateMessage" class="btn btn-info">Yeni Mesaj Girişi</a>
+
+            <a href="/Message/CreateMessage" class="btn btn-primary mt-2">
+                <i class="bi bi-plus-circle me-2"></i>Yeni Mesaj Ekle
+            </a>
         </div>
     </div>
 </div>

@@ -14,12 +14,16 @@ public class ContactController : Controller
 
     public IActionResult ContactList()
     {
+        ViewBag.ControllerName = "İletişim Bilgileri";
+        ViewBag.PageName = "Email-Telefon ve Açıklama Bilgisi";
         var values = _context.Contacts.ToList();
         return View(values);
     }
     [HttpGet]
     public IActionResult CreateContact()
     {
+        ViewBag.ControllerName = "İletişim Bilgileri";
+        ViewBag.PageName = "Yeni İletişim Bilgisi Ekleme";
         return View();
     }
     [HttpPost]
@@ -32,6 +36,8 @@ public class ContactController : Controller
     [HttpGet]
     public IActionResult UpdateContact(int Id)
     {
+        ViewBag.ControllerName = "İletişim Bilgileri";
+        ViewBag.PageName = "İletişim Bilgisi Güncelleme";
         var value = _context.Contacts.Find(Id);
         return View(value);
     }

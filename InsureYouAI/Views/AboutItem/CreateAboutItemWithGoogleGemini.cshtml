@@ -1,12 +1,95 @@
-﻿
-@{
-    ViewData["Title"] = "CreateAboutItemWithGoogleGemini";
+﻿@{
+    ViewData["Title"] = "AI ile Hakkımızda Öğeleri";
     Layout = "~/Views/AdminLayout/Index.cshtml";
 }
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<h1>Google Gemini Hakkımda öğeleri Yazı Örneği</h1>
+<div class="card shadow-sm">
+    <div class="card-body">
+               
+        <hr />
 
-<hr />
+        @if (ViewBag.Status == "Success")
+        {
+            <div class="alert alert-light border-start border-5 border-primary">
+                <strong class="text-primary">AI Üretimi İçerik</strong>
+                <p class="mb-0 text-muted">
+                    Aşağıdaki maddeler Google Gemini tarafından otomatik oluşturulmuştur.
+                </p>
+            </div>
 
-<p>@ViewBag.value</p>
+            <div class="bg-light rounded-3 p-4">
+                @{
+                    var lines = ViewBag.Value.ToString()
+                    .Split('\n', StringSplitOptions.RemoveEmptyEntries);
+                }
+
+                <ul class="list-group list-group-flush">
+                    @foreach (var line in lines)
+                    {
+                        <li class="list-group-item bg-transparent">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            @line.Trim()
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+
+        else if (ViewBag.Status == "Overloaded")
+        {
+            <div class="alert alert-warning border-start border-4 border-warning">
+                <strong>Gemini şu anda yoğun.</strong><br />
+                Lütfen birkaç saniye sonra tekrar deneyin.
+            </div>
+
+            <button class="btn btn-warning" onclick="location.reload()">
+                Tekrar Dene
+            </button>
+        }
+
+        else if (ViewBag.Status == "NoKey")
+        {
+            <div class="alert alert-danger">
+                API anahtarı bulunamadı. Lütfen secrets.json dosyasını kontrol edin.
+            </div>
+        }
+
+        else if (ViewBag.Status == "Error")
+        {
+            <div class="alert alert-danger">
+                Google Gemini API’den beklenmeyen bir hata alındı.
+            </div>
+        }
+
+        <hr />
+
+        <div class="d-flex justify-content-end gap-2">
+            <a href="/AboutItem/AboutItemList" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Listeye Dön
+            </a>
+
+            @if (ViewBag.Status == "Success")
+            {
+                <button class="btn btn-success" onclick="saveItems()">
+                    <i class="bi bi-database-add"></i> Öğeleri Kaydet
+                </button>
+            }
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function saveItems() {
+        Swal.fire({
+            title: 'Kaydetmek istiyor musunuz?',
+            text: 'Bu öğeler veritabanına kaydedilecektir.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Evet, kaydet',
+            cancelButtonText: 'Vazgeç'
+        });
+    }
+</script>

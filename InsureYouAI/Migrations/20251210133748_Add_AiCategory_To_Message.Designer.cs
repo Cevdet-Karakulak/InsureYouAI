@@ -4,6 +4,7 @@ using InsureYouAI.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InsureYouAI.Migrations
 {
     [DbContext(typeof(InsureContext))]
-    partial class InsureContextModelSnapshot : ModelSnapshot
+    [Migration("20251210133748_Add_AiCategory_To_Message")]
+    partial class Add_AiCategory_To_Message
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -361,6 +364,7 @@ namespace InsureYouAI.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MessageId"));
 
                     b.Property<string>("AiCategory")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -376,9 +380,6 @@ namespace InsureYouAI.Migrations
 
                     b.Property<string>("NameSurname")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Priority")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("SendDate")

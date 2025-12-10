@@ -1,0 +1,50 @@
+﻿@model InsureYouAI.Entities.Message
+@{
+    ViewData["Title"] = "Mesaj Detayı";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <h4 class="mb-3">📩 Mesaj Detayı</h4>
+
+        <table class="table table-bordered">
+            <tr>
+                <th>Ad Soyad</th>
+                <td>@Model.NameSurname</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>@Model.Email</td>
+            </tr>
+            <tr>
+                <th>Konu</th>
+                <td>@Model.Subject</td>
+            </tr>
+            <tr>
+                <th>AI Kategori</th>
+                <td>
+                    <span class="badge bg-info">
+                        @Model.AiCategory
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <th>Tarih</th>
+                <td>@Model.SendDate.ToString("dd.MM.yyyy HH:mm")</td>
+            </tr>
+            <tr>
+                <th>Mesaj</th>
+                <td style="white-space: pre-line">
+                    @Model.MessagetDetail
+                </td>
+            </tr>
+        </table>
+
+        <a href="/Message/MessageList" class="btn btn-secondary">
+            ← Listeye Dön
+        </a>
+
+    </div>
+</div>

@@ -10,16 +10,33 @@
             <h5 class="mb-0">Yeni Hakkımızda Yazı Girişi</h5>
         </div>
         <form method="post">
-            <label for="Title" class="form-label">Başlık</label>
+            @Html.AntiForgeryToken()
+
+            <label class="form-label">Başlık</label>
             <input type="text" class="form-control mb-3" asp-for="Title" />
-            <br />
-            <label for="ImageUrl" class="form-label">Görsel URL</label>
+
+            <label class="form-label">Görsel URL</label>
             <input type="text" class="form-control mb-3" asp-for="ImageUrl" />
-            <br />
-            <label for="Description" class="form-label">Açıklama</label>
+
+            <label class="form-label">Açıklama</label>
             <textarea class="form-control mb-3" asp-for="Description" rows="5"></textarea>
-            <br />
-            <button type="submit" class="btn btn-primary">Hakkımızda Yazısısnı Kaydet </button>
+
+            <button type="submit" class="btn btn-primary" onclick="showLoading()">
+                Hakkımızda Yazısını Kaydet
+            </button>
         </form>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            function showLoading() {
+                Swal.fire({
+                    title: 'Kaydediliyor...',
+                    html: 'Lütfen bekleyiniz',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            }
+        </script>
     </div>
 </div>

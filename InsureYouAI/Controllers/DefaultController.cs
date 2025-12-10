@@ -1,8 +1,8 @@
 ﻿using InsureYouAI.Context;
 using InsureYouAI.Entities;
+using InsureYouAI.Services;
 using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using MimeKit;
 using System.Net.Http.Headers;
 using System.Text;
@@ -14,138 +14,145 @@ namespace InsureYouAI.Controllers
     public class DefaultController : Controller
     {
         private readonly InsureContext _context;
-        public DefaultController(InsureContext context)
+        private readonly AiMessageClassifierService _aiService;
+        private readonly IConfiguration _configuration;
+        private readonly HttpClient _http;
+
+        public DefaultController(
+            InsureContext context,
+            AiMessageClassifierService aiService,
+            IConfiguration configuration,
+            IHttpClientFactory httpClientFactory)
         {
             _context = context;
-        }
-        public IActionResult Index()
-        {
-            return View();
+            _aiService = aiService;
+            _configuration = configuration;
+            _http = httpClientFactory.CreateClient();
         }
 
-        public PartialViewResult SendMessage()
-        {
-            return PartialView();
-        }
+        public IActionResult Index() => View();
 
         [HttpPost]
         public async Task<IActionResult> SendMessage(Message message)
         {
+            // Temel bilgiler
             message.SendDate = DateTime.Now;
             message.IsRead = false;
+
+            // AI sınıflandırma
+            message.AiCategory = await _aiService.DetectCategoryAsync(message.MessagetDetail);
+            message.Priority = await _aiService.DetectPriorityAsync(message.MessagetDetail);
+
             _context.Messages.Add(message);
             _context.SaveChanges();
 
-            #region Claude_AI_Analiz
-            string apiKey = "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";
-            string prompt = $@"
-Sen bir sigorta firmasının müşteri iletişim asistanısın.
+            // ---------------------------------------------------
+            //  G E M I N I   A I   -   M Ü Ş T E R İ   Y A N I T I
+            // ---------------------------------------------------
+            string apiKey = _configuration["GeminiAI:ApiKey"];
+            string model = "gemini-2.5-flash-latest";
 
-Kurumsal ama samimi, net ve anlaşılır bir dille yaz.
-Yanıtlarını 2–3 paragrafla sınırla.
-Eksik bilgi (poliçe numarası, kimlik vb.) varsa kibarca talep et.
-Fiyat, ödeme, teminat gibi kritik konularda kesin rakam verme, müşteri temsilcisine yönlendir.
-Hasar ve sağlık gibi hassas durumlarda empati kur.
-Cevaplarını teşekkür ve iyi dilekle bitir.
-Mesajının sonunda mutlaka şu imzayı ekle:
-'Saygılarımızla,
+            string prompt =
+$@"Sigorta firması müşteri temsilcisi gibi profesyonel bir yanıt hazırla.
+
+Kurallar:
+- 2–3 paragraf yaz.
+- Eksik bilgi varsa kibarca iste.
+- Fiyat / rakam verme.
+- Empati kur.
+- Sonunda mutlaka imza ekle:
+Saygılarımızla,
 InsureYou Sigorta
-Müşteri İletişim Asistanı'
+Müşteri İletişim Asistanı
 
-Çıktıyı TEK SATIRLIK, geçerli bir JSON olarak döndür:
-{{""subject"":""..."" , ""body"":""...""}}
+Aşağıdaki formatta TEK SATIRLIK JSON döndür:
+{{""subject"":""..."",""body"":""...""}}
 
-Kullanıcının sana gönderdiği mesaj şu şekilde: '{message.MessagetDetail}'
+Müşteri mesajı:
+{message.MessagetDetail}
+
+Kategori: {message.AiCategory}
+Öncelik: {message.Priority}
 ";
 
-
-            using var client = new HttpClient();
-            client.BaseAddress = new Uri("https://api.anthropic.com/");
-            client.DefaultRequestHeaders.Add("x-api-key", apiKey);
-            client.DefaultRequestHeaders.Add("anthropic-version", "2023-06-01");
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            var requestBody = new
+            var body = new
             {
-                model = "claude-3-opus-20240229",
-                max_tokens = 1000,
-                temperature = 0.5,
-                messages = new[]
+                contents = new[]
                 {
-            new { role = "user", content = prompt }
-        }
+                    new { parts = new[] { new { text = prompt } } }
+                }
             };
 
-            var jsonContent = new StringContent(JsonSerializer.Serialize(requestBody), Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("v1/messages", jsonContent);
-            var responseString = await response.Content.ReadAsStringAsync();
+            string subject = "InsureYouAI Yanıtı";
+            string textBody = "Talebiniz alınmıştır.";
 
-            var json = JsonNode.Parse(responseString);
-            string? textContent = json?["content"]?[0]?["text"]?.ToString();
-            #endregion
-
-            #region Email_Gönderme
-            string subjectLine = "AI'dan gelen yanıt";
-            string bodyText = textContent ?? "Yanıt alınamadı.";
-
-            // JSON Parse güvenliği
-            if (!string.IsNullOrEmpty(textContent))
+            try
             {
-                try
-                {
-                    var clean = textContent.Trim()
-                                           .Replace("\r", "")
-                                           .Replace("\n", " ");
-                    var parsed = JsonNode.Parse(clean);
-                    subjectLine = parsed?["subject"]?.ToString() ?? subjectLine;
-                    bodyText = parsed?["body"]?.ToString() ?? bodyText;
-                }
-                catch
-                {
-                    // Claude düz metin dönerse JSON parse hatası almasın
-                    bodyText = textContent;
-                }
+                var content = new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json");
+
+                var response = await _http.PostAsync(
+                    $"https://generativelanguage.googleapis.com/v1/models/{model}:generateContent?key={apiKey}",
+                    content);
+
+                string result = await response.Content.ReadAsStringAsync();
+
+                var doc = JsonDocument.Parse(result);
+                string aiText = doc.RootElement
+                    .GetProperty("candidates")[0]
+                    .GetProperty("content")
+                    .GetProperty("parts")[0]
+                    .GetProperty("text")
+                    .GetString();
+
+                // JSON’ı parse et
+                var clean = aiText.Replace("\n", " ").Trim();
+                var parsed = JsonNode.Parse(clean);
+
+                subject = parsed?["subject"]?.ToString() ?? subject;
+                textBody = parsed?["body"]?.ToString() ?? textBody;
+            }
+            catch
+            {
+                // Hata olsa bile mail göndersin
+                textBody = "Talebiniz alınmıştır. En kısa zamanda dönüş yapılacaktır.";
             }
 
-            var mimeMessage = new MimeMessage();
-            mimeMessage.From.Add(new MailboxAddress("InsureYouAI Admin", "karakulakcevdet@gmail.com"));
-            mimeMessage.To.Add(new MailboxAddress(message.NameSurname, message.Email));
-            mimeMessage.Subject = subjectLine;
-
-            var bodyBuilder = new BodyBuilder { TextBody = bodyText };
-            mimeMessage.Body = bodyBuilder.ToMessageBody();
-
-            using var smtp = new SmtpClient();
-            smtp.Connect("smtp.gmail.com", 587, false);
-            smtp.Authenticate("karakulakcevdet@gmail.com", "qqia afdw ivhu qmjr");
-            smtp.Send(mimeMessage);
-            smtp.Disconnect(true);
-            #endregion
-
-            #region ClaudeAIMessage_DbKayıt
-            ClaudeAIMessage claudeAIMessage = new ClaudeAIMessage()
+            // ---------------------------------------------------
+            //  M A İ L   G Ö N D E R
+            // ---------------------------------------------------
+            try
             {
-                MessageDetail = bodyText,
+                var mail = new MimeMessage();
+                mail.From.Add(new MailboxAddress("InsureYouAI", _configuration["Email:From"]));
+                mail.To.Add(new MailboxAddress(message.NameSurname, message.Email));
+                mail.Subject = subject;
+                mail.Body = new BodyBuilder { TextBody = textBody }.ToMessageBody();
+
+                using var smtp = new SmtpClient();
+                smtp.Connect("smtp.gmail.com", 587, false);
+                smtp.Authenticate(_configuration["Email:From"], _configuration["Email:Password"]);
+                smtp.Send(mail);
+                smtp.Disconnect(true);
+            }
+            catch
+            {
+                // email hatası sistemi bozmasın
+            }
+
+            // ---------------------------------------------------
+            //  DB LOG KAYDI
+            // ---------------------------------------------------
+            _context.ClaudeAIMessages.Add(new ClaudeAIMessage
+            {
+                MessageDetail = textBody,
                 ReceiveEmail = message.Email,
                 ReceiveNameSurname = message.NameSurname,
                 SendDate = DateTime.Now
-            };
-            _context.ClaudeAIMessages.Add(claudeAIMessage);
+            });
+
             await _context.SaveChangesAsync();
-            #endregion
 
-            return RedirectToAction("Index");
-        }
-
-        public PartialViewResult SubscribeEmail()
-        {
-            return PartialView();
-        }
-
-        [HttpPost]
-        public IActionResult SubscribeEmail(string email)
-        {
-            return View();
+            return RedirectToAction("Index", new { sent = true });
         }
     }
 }

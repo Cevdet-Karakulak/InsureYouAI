@@ -1,6 +1,7 @@
-using InsureYouAI.Context;
+﻿using InsureYouAI.Context;
 using InsureYouAI.Entities;
 using InsureYouAI.Models;
+using InsureYouAI.Services;
 using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,40 +15,35 @@ builder.Services.AddHttpClient("openai", c =>
 
 // Add services to the container.
 builder.Services.AddDbContext<InsureContext>();
-
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddIdentity<AppUser, IdentityRole>()
     .AddEntityFrameworkStores<InsureContext>()
     .AddDefaultTokenProviders();
 
+builder.Services.AddScoped<AiMessageClassifierService>();
 
 var app = builder.Build();
 
 app.UseExceptionHandler("/Errors/500");
-app.UseStatusCodePagesWithReExecute("/Errors/Page{0}");
+//app.UseStatusCodePagesWithReExecute("/Errors/Page{0}");
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
-
-app.MapHub<ChatHub>("/chathub");
-
+// *** EN ÜSTE GELMESİ GEREKENLER ***
 app.UseHttpsRedirection();
+app.UseStaticFiles();   // ← Bunu ekle (çok önemli)
 app.UseRouting();
 
+app.UseAuthentication();  // ← Mutlaka UseAuthorization'dan önce olmalı
 app.UseAuthorization();
 
-app.MapStaticAssets();
+// SignalR route
+app.MapHub<ChatHub>("/chathub");
 
+// *** CONTROLLER ROUTE BURADA OLMALI ***
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
 
 
 app.Run();

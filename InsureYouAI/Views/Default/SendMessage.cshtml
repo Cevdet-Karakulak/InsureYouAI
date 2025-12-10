@@ -17,19 +17,19 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="contact-field p-relative c-name mb-20">
-                                        <input type="text" id="firstn" name="NameSurname" placeholder="Adınız Soyadınız" required>
+                                        <input type="text" name="NameSurname" placeholder="Adınız Soyadınız" required>
                                     </div>
                                 </div>
 
                                 <div class="col-lg-12">
                                     <div class="contact-field p-relative c-subject mb-20">
-                                        <input type="text" id="email" name="Email" placeholder="Email Adresiniz" required>
+                                        <input type="email" name="Email" placeholder="Email Adresiniz" required>
                                     </div>
                                 </div>
 
                                 <div class="col-lg-12">
                                     <div class="contact-field p-relative c-name mb-20">
-                                        <input type="text" id="des" name="Subject" placeholder="Mesaj Konusu" required>
+                                        <input type="text" name="Subject" placeholder="Mesaj Konusu" required>
                                     </div>
                                 </div>
 
@@ -41,44 +41,49 @@
 
                                 <div class="col-lg-12">
                                     <div class="slider-btn mt-20">
-                                        <button id="sendBtn" class="btn ss-btn" data-animation="fadeInRight" data-delay=".8s">Mesajı Gönder</button>
+                                        <button id="sendBtn" class="btn ss-btn" type="submit" data-animation="fadeInRight" data-delay=".8s">
+                                            Mesajı Gönder
+                                        </button>
                                     </div>
                                 </div>
-
-                                <!-- Success Modal -->
-                                <div class="modal fade" id="messageModal" tabindex="-1" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered modal-lg">
-                                        <div class="modal-content text-center p-4 shadow-lg rounded-4" style="background: #fff;">
-                                            <div class="modal-body">
-                                                <div class="mb-3">
-                                                    <!-- Yeşil check icon -->
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="green" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.97 10.97l-3.5-3.5a.75.75 0 1 1 1.06-1.06l2.47 2.47 4.47-4.47a.75.75 0 0 1 1.06 1.06l-5 5a.75.75 0 0 1-1.06 0z"/>
-                                                    </svg>
-                                                </div>
-                                                <h5 class="mb-3 text-success fw-bold">Mesajınız alındı ✅</h5>
-                                                <p class="mb-4">Teşekkür ederiz! En kısa zamanda sizinle iletişime geçeceğiz.</p>
-                                                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Tamam</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <script>
-                                    document.getElementById("sendBtn").addEventListener("click", function (event) {
-                                        // Formu submit ederken modal göster
-                                        var myModal = new bootstrap.Modal(document.getElementById('messageModal'));
-                                        myModal.show();
-
-                                        // 5 saniye sonra kapat
-                                        setTimeout(function () {
-                                            myModal.hide();
-                                        }, 5000);
-                                    });
-                                </script>
-
                             </div>
                         </form>
+
+                        <!-- Success Modal -->
+                        <div class="modal fade" id="messageModal" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-content text-center p-4 shadow-lg rounded-4" style="background: #fff;">
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="green" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.97 10.97l-3.5-3.5a.75.75 0 1 1 1.06-1.06l2.47 2.47 4.47-4.47a.75.75 0 0 1 1.06 1.06l-5 5a.75.75 0 0 1-1.06 0z" />
+                                            </svg>
+                                        </div>
+                                        <h5 class="mb-3 text-success fw-bold">Mesajınız alındı ✅</h5>
+                                        <p class="mb-4">Teşekkür ederiz! En kısa zamanda sizinle iletişime geçeceğiz.</p>
+                                        <button type="button" class="btn btn-success" data-bs-dismiss="modal">Tamam</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @* Redirect sonrası başarı modalını tetikle *@
+                        @if (Context.Request.Query["sent"] == "true")
+                        {
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    var modalEl = document.getElementById('messageModal');
+                                    if (modalEl) {
+                                        var myModal = new bootstrap.Modal(modalEl);
+                                        myModal.show();
+
+                                        setTimeout(function () {
+                                            myModal.hide();
+                                        }, 4000);
+                                    }
+                                });
+                            </script>
+                        }
                     </div>
                 </div>
             </div>
@@ -87,18 +92,15 @@
 </section>
 
 <style>
-    /* Modal arkaplanı daha opak yap */
     .modal-backdrop.show {
         opacity: 0.8 !important;
     }
 
-    /* Modal kutusunu daha net ve modern yap */
     .modal-content {
         border: none;
         background: #fff;
     }
 
-    /* Başarı mesajı için stil */
     .modal-body h5 {
         font-size: 1.5rem;
     }

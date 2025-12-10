@@ -2,8 +2,24 @@
 @{
     ViewData["Title"] = "AboutList";
     Layout = "~/Views/AdminLayout/Index.cshtml";
-}
+    bool hasAbout = ViewBag.HasAbout != null && (bool)ViewBag.HasAbout;
 
+}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@if (TempData["Success"] != null)
+{
+    <script>
+        Swal.fire({
+            toast: true,
+            icon: 'success',
+            title: '@TempData["Success"]',
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+        });
+    </script>
+}
 <div class="card">
     <div class="card-body">
         <div class="d-flex align-items-center">
@@ -13,6 +29,7 @@
                 <input class="form-control ps-5" type="text" placeholder="search">
             </form>
         </div>
+
         <div class="table-responsive mt-3">
             <table class="table align-middle">
                 <thead class="table-secondary">
@@ -27,26 +44,63 @@
                     {
                         <tr>
                             <td>@item.Title</td>
-                            <td>@item.Description</td>
+                            <td style="white-space: normal; word-break; break-word; max-width:400px;">@item.Description</td>
                             <td>
                                 <div class="table-actions d-flex align-items-center gap-3 fs-6">
-                                    <a href="/Default/Index" class="text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Sitede Gör"><i class="bi bi-eye-fill"></i></a>
-                                    <a href="/About/UpdateAbout/@item.AboutId" class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Düzenle"><i class="bi bi-pencil-fill"></i></a>
-                                    <a href="/About/DeleteAbout/@item.AboutId" class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Sil"><i class="bi bi-trash-fill"></i></a>
+                                    <a href="/Default/Index" class="text-primary" title="Sitede Gör"><i class="bi bi-eye-fill"></i></a>
+                                    <a href="/About/UpdateAbout/@item.AboutId" class="text-warning" title="Düzenle"><i class="bi bi-pencil-fill"></i></a>
+                                    <a href="/About/DeleteAbout/@item.AboutId" class="text-danger" title="Sil"><i class="bi bi-trash-fill"></i></a>
                                 </div>
                             </td>
                         </tr>
                     }
-
                 </tbody>
             </table>
-            @{
-                bool isDisabled = Model != null && Model.Any();
-            }
 
-            <a href="/About/CreateAbout" class="btn btn-primary @(isDisabled ? "disabled" : "")">Yeni Hakkımızda yazısı Girişi</a>
+            <button class="btn btn-primary mt-3" onclick="confirmAboutCreate()">
+                Yeni Hakkımızda Yazısı Girişi
+            </button>
+
+            <form id="deleteAboutForm" method="post"
+                  asp-action="DeleteExistingAbout"
+                  asp-controller="About">
+                @Html.AntiForgeryToken()
+            </form>
         </div>
     </div>
 </div>
+<script>
+    function confirmAboutCreate() {
 
+        const hasAbout = @hasAbout.ToString().ToLower();
 
+        if (hasAbout) {
+            Swal.fire({
+                title: 'Emin misiniz?',
+                text: "Mevcut bir 'Hakkımızda' yazısı bulunmaktadır. Devam ederseniz mevcut yazı silinecektir.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Evet, sil ve devam et',
+                cancelButtonText: 'Vazgeç'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    Swal.fire({
+                        title: 'İşlem Yapılıyor...',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+
+                    document.getElementById('deleteAboutForm').submit();
+                }
+            });
+        }
+        else {
+            window.location.href = '/About/CreateAbout';
+        }
+    }
+</script>

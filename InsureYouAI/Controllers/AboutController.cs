@@ -18,25 +18,48 @@ public class AboutController : Controller
     public IActionResult AboutList()
     {
         ViewBag.ControllerName = "Hakkımızda";
-        ViewBag.PageName = "Hakkımızda Listesi";
+        ViewBag.PageName = "Mevcut Hakkımızda Yazısı";
+
         var values = _context.Abouts.ToList();
+        ViewBag.HasAbout = values.Any();
+
         return View(values);
     }
+
     [HttpGet]
-    public IActionResult CreateAbout()
+    public IActionResult CreateAbout(bool force = false)
     {
+        ViewBag.ControllerName = "Hakkımızda";
+        ViewBag.PageName = "Yeni Hakkımızda Yazı Girişi (Tema bütünlüğü için yalnızca 1 adet Hakkımızda yazısı giriniz)";
+
+        if (force)
+        {
+            var existing = _context.Abouts.FirstOrDefault();
+            if (existing != null)
+            {
+                _context.Abouts.Remove(existing);
+                _context.SaveChanges();
+            }
+        }
+
         return View();
     }
+
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public IActionResult CreateAbout(About about)
     {
         _context.Abouts.Add(about);
         _context.SaveChanges();
+
+        TempData["Success"] = "Hakkımızda yazısı başarıyla kaydedildi.";
         return RedirectToAction("AboutList");
     }
     [HttpGet]
     public IActionResult UpdateAbout(int Id)
     {
+        ViewBag.ControllerName = "Hakkımızda";
+        ViewBag.PageName = "Hakkımızda Yazı Güncelleme Sayfası";
         var value = _context.Abouts.Find(Id);
         return View(value);
     }
@@ -47,7 +70,19 @@ public class AboutController : Controller
         _context.SaveChanges();
         return RedirectToAction("AboutList");
     }
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult DeleteExistingAbout()
+    {
+        var existing = _context.Abouts.FirstOrDefault();
+        if (existing != null)
+        {
+            _context.Abouts.Remove(existing);
+            _context.SaveChanges();
+        }
 
+        return RedirectToAction("CreateAbout");
+    }
     [HttpGet]
     public IActionResult DeleteAbout(int Id)
     {
