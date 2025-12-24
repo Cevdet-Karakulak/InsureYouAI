@@ -4,46 +4,81 @@
             <img src="/snacked/ltr/assets/images/logo-icon.png" class="logo-icon" alt="logo icon">
         </div>
         <div>
-            <h4 class="logo-text">Admin Paneli</h4>
+            <h4 class="logo-text">InsureYou Admin</h4>
         </div>
         <div class="toggle-icon ms-auto">
             <i class="bi bi-list"></i>
         </div>
     </div>
-    <ul class="metismenu" id="menu">
-        <li>
-            <a href="/Default/Index/">
-                <div class="parent-icon"><i class="bi bi-globe2"></i></div>
-                <div class="menu-title">Siteye Git</div>
-            </a>
-        </li>
 
+    <ul class="metismenu" id="menu">
+        <li class="menu-label">Genel</li>
         <li>
             <a href="/Dashboard/Index/">
                 <div class="parent-icon"><i class="bi bi-speedometer2"></i></div>
                 <div class="menu-title">Dashboard</div>
             </a>
         </li>
+        <li>
+            <a href="/Default/Index/" target="_blank">
+                <div class="parent-icon"><i class="bi bi-globe2"></i></div>
+                <div class="menu-title">Siteye Git</div>
+            </a>
+        </li>
 
+        <li class="menu-label">Yapay Zeka(AI) Merkezi</li>
         <li>
             <a href="/Chat/SendChatWithAI/">
                 <div class="parent-icon"><i class="bi bi-lightbulb"></i></div>
                 <div class="menu-title">Anlık AI Chat Bot</div>
             </a>
         </li>
+        <li>
+            <a href="/PolicyAnalysisWithClaude/PdfAnalyze/">
+                <div class="parent-icon"><i class="bi bi-file-earmark-pdf"></i></div>
+                <div class="menu-title">Claude Poliçe Analizi</div>
+            </a>
+        </li>
+        <li>
+            <a href="/DamageAssessment/Index/">
+                <div class="parent-icon"><i class="bi bi-camera-fill"></i></div>
+                <div class="menu-title">AI Hasar Tespit (Vision)</div>
+            </a>
+        </li>
+        <li>
+            <a href="/Tavily/Search/">
+                <div class="parent-icon"><i class="bi bi-search"></i></div>
+                <div class="menu-title">Tavily Akıllı Arama</div>
+            </a>
+        </li>
+        <li>
+            <a href="/ElevenLabsAI/SpeakInsuranceAnswer3/">
+                <div class="parent-icon"><i class="bi bi-mic"></i></div>
+                <div class="menu-title">Sesli AI Asistan</div>
+            </a>
+        </li>
+        <li>
+            <a href="/Forecast/Index/">
+                <div class="parent-icon"><i class="bi bi-bar-chart-line"></i></div>
+                <div class="menu-title">Poliçe Tahminleri (ML)</div>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon"><i class="bi bi-brush"></i></div>
+                <div class="menu-title">AI Görsel İşlemleri</div>
+            </a>
+            <ul>
+                <li><a href="/ImageAI/CreateImageWithOpenAI/"><i class="bi bi-arrow-right-short"></i>Görsel Oluştur</a></li>
+                <li><a href="/ImageAI/Gallery"><i class="bi bi-arrow-right-short"></i>Görsel Galerisi</a></li>
+            </ul>
+        </li>
 
+        <li class="menu-label">İçerik Yönetimi</li>
         <li>
             <a href="/Category/Categorylist/">
                 <div class="parent-icon"><i class="bi bi-grid"></i></div>
                 <div class="menu-title">Kategoriler</div>
-            </a>
-        </li>
-        <li>
-            <a href="/AppUser/UserList">
-                <div class="parent-icon">
-                    <i class="bi bi-people"></i>
-                </div>
-                <div class="menu-title">Kullanıcı Listesi</div>
             </a>
         </li>
         <li>
@@ -52,65 +87,10 @@
                 <div class="menu-title">Makaleler</div>
             </a>
         </li>
-
-        <li>
-            <a href="/about/aboutlist/">
-                <div class="parent-icon"><i class="bi bi-info-circle"></i></div>
-                <div class="menu-title">Hakkımızda</div>
-            </a>
-        </li>
-
-        <li>
-            <a href="/AboutItem/AboutItemList/">
-                <div class="parent-icon"><i class="bi bi-ui-checks-grid"></i></div>
-                <div class="menu-title">Hakkımızda Ögeleri</div>
-            </a>
-        </li>
-
-        <li>
-            <a href="/contact/contactlist/">
-                <div class="parent-icon"><i class="bi bi-telephone"></i></div>
-                <div class="menu-title">İletişim</div>
-            </a>
-        </li>
-
-        <li>
-            <a href="/message/messagelist/">
-                <div class="parent-icon"><i class="bi bi-envelope"></i></div>
-                <div class="menu-title">Mesaj Listesi</div>
-            </a>
-        </li>
-
-        <li>
-            <a href="/PricingPlan/PricingPlanList/">
-                <div class="parent-icon"><i class="bi bi-credit-card"></i></div>
-                <div class="menu-title">Ödeme Planları</div>
-            </a>
-        </li>
-
         <li>
             <a href="/Service/ServiceList/">
                 <div class="parent-icon"><i class="bi bi-briefcase"></i></div>
                 <div class="menu-title">Hizmetlerimiz</div>
-            </a>
-        </li>
-
-        <li>
-            <a href="/slider/sliderlist/">
-                <div class="parent-icon"><i class="bi bi-cpu"></i></div>
-                <div class="menu-title">Slider</div>
-            </a>
-        </li>
-        <li>
-            <a href="/slider/sliderlist/">
-                <div class="parent-icon"><i class="bi bi-brush"></i></div>
-                <div class="menu-title">AI Görsel Oluştur</div>
-            </a>
-        </li>
-       <li>
-           <a href="/ImageAI/Gallery">
-                <div class="parent-icon"><i class="bi bi-images"></i></div>
-                <div class="menu-title">AI Görsel Galerisi</div>
             </a>
         </li>
         <li>
@@ -120,27 +100,48 @@
             </a>
         </li>
 
+        <li class="menu-label">Kurumsal</li>
         <li>
-            <a href="/TrailerVideo/TrailerVideoList/">
-                <div class="parent-icon"><i class="bi bi-play-circle"></i></div>
-                <div class="menu-title">Trailer Video</div>
+            <a href="/AppUser/UserList">
+                <div class="parent-icon"><i class="bi bi-people"></i></div>
+                <div class="menu-title">Kullanıcı Listesi</div>
             </a>
         </li>
+        <li>
+            <a href="/message/messagelist/">
+                <div class="parent-icon"><i class="bi bi-envelope"></i></div>
+                <div class="menu-title">Gelen Mesajlar</div>
+            </a>
+        </li>
+        <li>
+            <a href="/PricingPlan/PricingPlanList/">
+                <div class="parent-icon"><i class="bi bi-credit-card"></i></div>
+                <div class="menu-title">Ödeme Planları</div>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon"><i class="bi bi-info-circle"></i></div>
+                <div class="menu-title">Hakkımızda</div>
+            </a>
+            <ul>
+                <li><a href="/about/aboutlist/"><i class="bi bi-arrow-right-short"></i>Genel Bilgi</a></li>
+                <li><a href="/AboutItem/AboutItemList/"><i class="bi bi-arrow-right-short"></i>Ögeler</a></li>
+            </ul>
+        </li>
 
+        <li class="menu-label">Sistem</li>
         <li>
             <a href="/settings/settingslist/">
                 <div class="parent-icon"><i class="bi bi-gear"></i></div>
                 <div class="menu-title">Ayarlar</div>
             </a>
         </li>
-
         <li>
             <a href="/account/logout/">
-                <div class="parent-icon"><i class="bi bi-box-arrow-right"></i></div>
-                <div class="menu-title">Çıkış Yap</div>
+                <div class="parent-icon text-danger"><i class="bi bi-box-arrow-right"></i></div>
+                <div class="menu-title text-danger">Çıkış Yap</div>
             </a>
         </li>
-
     </ul>
-    <!--end navigation-->
 </aside>

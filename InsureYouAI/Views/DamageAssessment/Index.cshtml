@@ -1,0 +1,104 @@
+﻿@{
+    ViewData["Title"] = "AI Hasar Analizi";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-5">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-primary text-white py-3">
+                    <h5 class="mb-0"><i class="bi bi-camera-fill"></i> Hasar Fotoğrafı Yükle</h5>
+                </div>
+                <div class="card-body text-center p-4 d-flex flex-column justify-content-center align-items-center">
+
+                    @if (ViewBag.ImageBase64 != null)
+                    {
+                        <img src="@ViewBag.ImageBase64" class="img-fluid rounded shadow-sm mb-3" style="max-height: 400px; border: 3px solid #eee;" alt="Yüklenen Hasar Fotosu" />
+                        <a href="/DamageAssessment/Index" class="btn btn-outline-primary mt-2"><i class="bi bi-arrow-counterclockwise"></i> Yeni Analiz Yap</a>
+                    }
+                    else
+                    {
+                        <form method="post" asp-action="AnalyzeDamage" enctype="multipart/form-data" id="analysisForm" class="w-100">
+                            <div class="mb-4 upload-area p-4 border border-2 border-dashed text-center bg-light rounded" style="cursor: pointer;" onclick="document.getElementById('imageFile').click();">
+                                <i class="bi bi-cloud-arrow-up text-primary" style="font-size: 3rem;"></i>
+                                <p class="mt-2 text-muted">Fotoğrafı buraya sürükleyin veya tıklayıp seçin</p>
+                                <input type="file" name="imageFile" id="imageFile" class="d-none" accept="image/*" onchange="previewImage(event)">
+                                <img id="preview-img" class="img-fluid rounded shadow-sm mt-3 d-none" style="max-height: 300px;" />
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-lg w-100" id="submitBtn" disabled>
+                                <span id="btnText"><i class="bi bi-search"></i> Hasarı Analiz Et</span>
+                                <span id="btnSpinner" class="spinner-border spinner-border-sm d-none" role="status"></span>
+                            </button>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7 mt-4 mt-lg-0">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-success text-white py-3 d-flex align-items-center">
+                    <i class="bi bi-robot fs-4 me-2"></i>
+                    <h5 class="mb-0">AI Eksper Raporu</h5>
+                </div>
+                <div class="card-body p-4" style="background-color: #f8f9fa;">
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-danger d-flex align-items-center">
+                            <i class="bi bi-exclamation-triangle-fill fs-4 me-2"></i>
+                            <div>@ViewBag.Error</div>
+                        </div>
+                    }
+                    else if (ViewBag.AnalysisResult != null)
+                    {
+                        <div class="analysis-content" style="font-size: 1.1rem; line-height: 1.8; white-space: pre-wrap;">
+                            @ViewBag.AnalysisResult
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center text-muted py-5 my-5">
+                            <i class="bi bi-card-image text-secondary" style="font-size: 4rem; opacity: 0.3;"></i>
+                            <p class="mt-3 fs-5">Analiz sonucu burada görüntülenecek.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Resim seçilince önizleme göster ve butonu aktifleştir
+    function previewImage(event) {
+        var input = event.target;
+        var preview = document.getElementById('preview-img');
+        var submitBtn = document.getElementById('submitBtn');
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.classList.remove('d-none');
+                submitBtn.disabled = false;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    // Form gönderilirken loading efekti
+    document.getElementById('analysisForm').onsubmit = function () {
+        document.getElementById('btnText').classList.add('d-none');
+        document.getElementById('btnSpinner').classList.remove('d-none');
+        document.getElementById('submitBtn').disabled = true;
+    };
+</script>
+
+<style>
+    .upload-area:hover {
+        background-color: #e9ecef !important;
+        border-color: #0d6efd !important;
+    }
+</style>

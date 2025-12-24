@@ -1,0 +1,106 @@
+﻿@using Newtonsoft.Json
+@model dynamic
+
+@{
+    ViewData["Title"] = "Search";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+
+    // JSON verisini işlemek için nesneye dönüştürüyoruz
+    dynamic tavilyData = null;
+    if (ViewBag.TavilyRaw != null)
+    {
+        tavilyData = JsonConvert.DeserializeObject(ViewBag.TavilyRaw);
+    }
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4" style="font-weight:700; color: #2c3e50;">
+        <i class="bi bi-globe2 text-primary"></i> InsureYou AI Akıllı Arama
+    </h2>
+
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body p-4">
+            <form method="post" asp-action="SearchWithTavily" id="searchForm">
+                <div class="input-group">
+                    <input type="text" name="query" class="form-control form-control-lg border-end-0"
+                           placeholder="Sigorta mevzuatı veya güncel fiyatlar hakkında sorun..."
+                           value="@ViewBag.Query" required style="border-radius: 12px 0 0 12px;" />
+
+                    <button class="btn btn-primary btn-lg" type="submit" id="searchBtn" style="border-radius: 0 12px 12px 0;">
+                        <span id="btnText"><i class="bx bx-search-alt-2"></i> Araştır</span>
+                        <span id="btnSpinner" class="spinner-border spinner-border-sm d-none" role="status"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @if (ViewBag.OpenAIResult != null)
+    {
+        <div class="card mb-4 border-0 shadow-lg animate__animated animate__fadeIn">
+            <div class="card-header bg-dark text-white d-flex align-items-center py-3" style="border-radius: 12px 12px 0 0;">
+                <i class="bx bx-sparkles fs-4 me-2 text-warning"></i>
+                <h5 class="mb-0">Yapay Zeka Özet Analizi</h5>
+            </div>
+            <div class="card-body p-4 bg-light" style="line-height: 1.8; font-size: 1.05rem;">
+                @ViewBag.OpenAIResult
+            </div>
+        </div>
+    }
+
+    @if (tavilyData != null && tavilyData.results != null)
+    {
+        <h5 class="mb-3 mt-5"><i class="bx bx-link-external"></i> Yararlanılan Kaynaklar</h5>
+        <div class="row">
+            @foreach (var item in tavilyData.results)
+            {
+                <div class="col-md-6 mb-3">
+                    <div class="card h-100 border-0 shadow-sm hover-card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6 class="card-title text-primary mb-0 text-truncate" style="max-width: 80%;">
+                                    <a href="@item.url" target="_blank" class="text-decoration-none">@item.title</a>
+                                </h6>
+                                <span class="badge bg-soft-success text-success border border-success px-2 py-1" style="font-size: 0.7rem;">
+                                    Güven: %@(Math.Round((double)item.score * 100))
+                                </span>
+                            </div>
+                            <p class="card-text text-muted small">
+                                @(item.content.ToString().Length > 150 ? item.content.ToString().Substring(0, 150) + "..." : item.content)
+                            </p>
+                            <a href="@item.url" target="_blank" class="btn btn-link btn-sm p-0 text-info">Kaynağa Git <i class="bx bx-right-arrow-alt"></i></a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<style>
+    .hover-card {
+        transition: transform 0.2s, shadow 0.2s;
+        border-radius: 15px !important;
+    }
+
+        .hover-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+        }
+
+    .bg-soft-success {
+        background-color: #e8f5e9;
+    }
+
+    #searchBtn {
+        min-width: 140px;
+    }
+</style>
+
+<script>
+    document.getElementById('searchForm').onsubmit = function() {
+        document.getElementById('btnText').classList.add('d-none');
+        document.getElementById('btnSpinner').classList.remove('d-none');
+        document.getElementById('searchBtn').disabled = true;
+    };
+</script>

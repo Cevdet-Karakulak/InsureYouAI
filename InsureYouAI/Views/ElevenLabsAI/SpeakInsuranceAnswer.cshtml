@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewData["Title"] = "SpeakInsuranceAnswer";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<h2>ElevenLabs – Text to Speech 🎧</h2>
+
+<form method="post">
+    <textarea name="text" class="form-control" rows="5" placeholder="Metni buraya yaz..."></textarea>
+    <br />
+    <button class="btn btn-primary">Sesi Oluştur</button>
+</form>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger mt-3">@ViewBag.Error</div>
+}
+
+@if (ViewBag.AudioUrl != null)
+{
+    <h4 class="mt-4">Oluşturulan Ses:</h4>
+    <audio controls>
+        <source src="@ViewBag.AudioUrl" type="audio/mpeg" />
+        Tarayıcınız audio tagini desteklemiyor.
+    </audio>
+}
