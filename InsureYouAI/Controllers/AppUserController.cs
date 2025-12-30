@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Http.Headers;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Text.Json;
 
@@ -13,10 +14,16 @@ namespace InsureYouAI.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly InsureContext _context;
-        public AppUserController(UserManager<AppUser> userManager, InsureContext context)
+        private readonly IConfiguration _configuration;
+
+        public AppUserController(
+            UserManager<AppUser> userManager,
+            InsureContext context,
+            IConfiguration configuration)
         {
             _userManager = userManager;
             _context = context;
+            _configuration = configuration;
         }
         public IActionResult UserList()
         {
@@ -57,7 +64,12 @@ namespace InsureYouAI.Controllers
             //Makaleleri tek bir metinde toplayalım
             var allArticles = string.Join("\n\n", articles);
 
-            var apiKey = "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";
+            var apiKey = _configuration["OpenAI:ApiKey"];
+            if (string.IsNullOrWhiteSpace(apiKey))
+            {
+                ViewBag.AIResult = "OpenAI API Key bulunamadı.";
+                return View(user);
+            }
 
             //Promptun Yazılması
 
@@ -86,7 +98,8 @@ Lütfen çıktıyı profesyonel rapor formatında, madde madde ve en sonda 5 mad
             //OpenAI Chat Completions
 
             using var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", apiKey);
 
             var body = new
             {
@@ -166,7 +179,12 @@ Lütfen çıktıyı profesyonel rapor formatında, madde madde ve en sonda 5 mad
             //Makaleleri tek bir metinde toplayalım
             var allComments = string.Join("\n\n", comments);
 
-            var apiKey = "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";
+            var apiKey = _configuration["OpenAI:ApiKey"];
+            if (string.IsNullOrWhiteSpace(apiKey))
+            {
+                ViewBag.AIResult = "OpenAI API Key bulunamadı.";
+                return View(user);
+            }
 
             //Promptun Yazılması
 
@@ -191,7 +209,8 @@ Yorumlar:
             //OpenAI Chat Completions
 
             using var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", apiKey);
 
             var body = new
             {
