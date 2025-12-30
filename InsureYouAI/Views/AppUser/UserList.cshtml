@@ -6,33 +6,73 @@
     int count = 0;
 }
 
-<div class="card">
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-white py-3 d-flex align-items-center justify-content-between">
+        <h5 class="mb-0 fw-bold text-dark">
+            <i class="bi bi-people-fill me-2 text-primary"></i>InsureYou AI Kullanıcı Listesi
+        </h5>
+        <span class="badge rounded-pill bg-primary px-3">@Model.Count Kayıtlı Kullanıcı</span>
+    </div>
     <div class="card-body">
-        <div class="d-flex align-items-center">
-            <h5 class="mb-0">InsureYou AI Kullanıcı Listesi</h5>
-        </div>
-        <div class="table-responsive mt-3">
-            <table class="table align-middle">
-                <thead class="table-secondary">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="bg-light">
                     <tr>
-                        <th>#</th>
-                        <th>Ad Soyad</th>
-                        <th>Durum</th>
-                        <th>Profil</th>
-                        <th>Yorumlar</th>
+                        <th class="border-0 text-muted small fw-bold" style="width: 50px;">#</th>
+                        <th class="border-0 text-muted small fw-bold">Kullanıcı</th>
+                        <th class="border-0 text-muted small fw-bold">Lokasyon / Unvan</th>
+                        <th class="border-0 text-muted small fw-bold text-center">Analiz</th>
+                        <th class="border-0 text-muted small fw-bold text-end">Yönetim</th>
                     </tr>
                 </thead>
                 <tbody>
-
                     @foreach (var item in Model)
                     {
                         count++;
                         <tr>
-                            <td>@count</td>
-                            <td>@item.Name @item.Surname</td>
-                            <td><a href="#" class="btn btn-info">Durum</a></td>
-                            <td><a href="/AppUser/UserProfileWithAI/@item.Id" class="btn btn-warning">Profil</a></td>
-                            <td><a href="/AppUser/UserCommentsProfileWithAI/@item.Id" class="btn btn-secondary">Yorumlar</a></td>
+                            <td class="text-muted fw-bold">@count</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                    {
+                                        <img src="@item.ImageUrl" class="rounded-circle shadow-sm me-3 object-fit-cover"
+                                             width="45" height="45" alt="@item.Name"
+                                             onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\'avatar-placeholder me-3\'>@item.Name[0]@item.Surname[0]</div>';">
+                                    }
+                                    else
+                                    {
+                                        <div class="avatar-placeholder me-3">
+                                            @item.Name[0]@item.Surname[0]
+                                        </div>
+                                    }
+                                    <div>
+                                        <div class="fw-bold text-dark">@item.Name @item.Surname</div>
+                                        <div class="small text-muted">@item.Email</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="small fw-bold text-dark">@item.Title</div>
+                                <div class="small text-muted"><i class="bi bi-geo-alt me-1"></i>@item.City</div>
+                            </td>
+                            <td class="text-center">
+                                <a href="#" class="btn btn-sm btn-light rounded-pill border px-3">
+                                    <i class="bi bi-cpu text-info me-1"></i> Durum
+                                </a>
+                            </td>
+                            <td class="text-end">
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-white border shadow-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                        İşlemler
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                                        <li><a class="dropdown-item" href="/AppUser/UserProfileWithAI/@item.Id"><i class="bi bi-person me-2"></i>Profil Detay</a></li>
+                                        <li><a class="dropdown-item" href="/AppUser/UserCommentsProfileWithAI/@item.Id"><i class="bi bi-chat-dots me-2"></i>Yorumları Gör</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-shield-lock me-2"></i>Erişimi Kısıtla</a></li>
+                                    </ul>
+                                </div>
+                            </td>
                         </tr>
                     }
                 </tbody>
@@ -40,3 +80,33 @@
         </div>
     </div>
 </div>
+
+<style>
+    /* Profil Resmi Olmayanlar İçin Stil */
+    .avatar-placeholder {
+        width: 45px;
+        height: 45px;
+        background: linear-gradient(45deg, #4e73df, #224abe);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-weight: bold;
+        font-size: 14px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f8faff;
+        cursor: default;
+    }
+
+    .object-fit-cover {
+        object-fit: cover;
+    }
+
+    .btn-white {
+        background-color: #fff;
+    }
+</style>

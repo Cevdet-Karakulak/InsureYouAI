@@ -20,8 +20,9 @@ public class ArticleController : Controller
     {
         ViewBag.ControllerName = "Makaleler";
         ViewBag.PageName = "Makale Listesi";
-        var values = _context.Articles.Include(x=>x.AppUser).ToList();
+        var values = _context.Articles.Include(x => x.AppUser).Include(y => y.Category).ToList();
         return View(values);
+
     }
     [HttpGet]
     public IActionResult CreateArticle()

@@ -1,58 +1,157 @@
 ﻿@model List<Article>
+
 @{
     ViewData["Title"] = "ArticleList";
     Layout = "~/Views/AdminLayout/Index.cshtml";
     int count = 0;
 }
 
-<div class="card">
+@functions {
+    string GetCategoryBadgeClass(string categoryName)
+    {
+        return categoryName switch
+        {
+            "Sağlık Sigortası" => "bg-success-subtle text-success",             
+            "Tamamlayıcı Sağlık Sigortası" => "bg-success text-white",          
+            "Yurt Dışı Seyahat Sigortası" => "bg-info-subtle text-info",       
+            "Araç Sigortası" => "bg-warning-subtle text-warning",               
+            "Kasko Sigortası" => "bg-warning-subtle  text-dark",                      
+            "Trafik Sigortası" => "bg-orange-subtle text-orange",               
+            "Konut Sigortası" => "bg-primary-subtle text-primary",              
+            "İş Yeri Sigortası" => "bg-primary-subtle text-white",                   
+            "DASK (Zorunlu Deprem)" => "bg-danger-subtle text-danger",         
+            "Hayat Sigortası" => "bg-dark-subtle text-dark",                    
+            "Evcil Hayvan Sigortası" => "bg-indigo-subtle text-indigo",        
+            "Egıtım Sıgortası" => "bg-secondary-subtle text-secondary",         
+            "Ferdi Kaza Sigortası" => "bg-danger text-white",                   
+            "Siber Güvenlik Sigortası" => "bg-dark text-white",                 
+            "Nakliyat Sigortası" => "bg-teal-subtle text-teal",                
+            "Tarım Sigortası" => "bg-lime-subtle text-lime",                    
+            _ => "bg-light text-dark"
+        };
+    }
+}
+
+<div class="card shadow-sm border-0 rounded-4">
     <div class="card-body">
-        <div class="d-flex align-items-center">
-            <h5 class="mb-0">Makale Alanı Veri Litesi</h5>
-            <form class="ms-auto position-relative">
-                <div class="position-absolute top-50 translate-middle-y search-icon px-3"><i class="bi bi-search"></i></div>
-                <input class="form-control ps-5" type="text" placeholder="search">
+
+        <!-- Header -->
+        <div class="d-flex align-items-center mb-3">
+            <h4 class="fw-bold mb-0 text-primary">
+                <i class="bi bi-journal-text"></i> Makaleler
+            </h4>
+
+            <!-- Search -->
+            <form class="ms-auto position-relative" style="max-width:260px;">
+                <div class="position-absolute top-50 translate-middle-y px-3">
+                    <i class="bi bi-search text-secondary"></i>
+                </div>
+                <input class="form-control ps-5 rounded-pill shadow-sm"
+                       type="text"
+                       placeholder="Makale ara...">
             </form>
         </div>
-        <div class="table-responsive mt-3">
-            <table class="table align-middle">
-                <thead class="table-secondary">
-                    <tr>
-                        <th>#</th>
-                        <th>Başlık</th>
-                        <th>Yazar</th>
-                        <th>Oluşturma Tarihi</th>
-                        <th>Güncelle</th>
-                        <th>Sil</th>
-                        <th>Sitede Gör</th>
 
+        <!-- Table -->
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light border-bottom">
+                    <tr>
+                        <th class="text-muted">#</th>
+                        <th class="text-muted">Başlık</th>
+                        <th class="text-muted">Kategori</th>
+                        <th class="text-muted">Yazar</th>
+                        <th class="text-muted">Tarih</th>
+                        <th class="text-center text-muted">İşlemler</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     @foreach (var item in Model)
                     {
                         count++;
-                        <tr>
-                            <td>@count</td>
-                            <th>@item.Title</th>
-                            <td>@item.AppUser.Name @item.AppUser.Surname</td>
-                            <td>@item.CreatedDate.ToString("dd-MMM-yyyy")</td>
+                        <tr class="table-row-hover">
+
+                            <!-- Index -->
                             <td>
-                                <a href="/Article/UpdateArticle?id=@item.ArticleId" class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Düzenle"><i class="bi bi-pencil-fill"></i></a>
+                                <span class="badge bg-secondary bg-opacity-75">@count</span>
                             </td>
+
+                            <!-- Title -->
+                            <td class="fw-semibold text-dark">
+                                <i class="bi bi-file-earmark-text text-primary me-1"></i>
+                                @item.Title
+                            </td>
+
+                            <!-- Category -->
                             <td>
-                                <a href="/Article/DeleteArticle/@item.ArticleId" class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Sil"><i class="bi bi-trash-fill"></i></a>
+                                <span class="badge rounded-pill px-3 py-2
+                                        @GetCategoryBadgeClass(item.Category.CategoryName)">
+                                    <i class="bi bi-tags me-1"></i>
+                                    @item.Category.CategoryName
+                                </span>
                             </td>
-                            <td>
-                                <a href="/Blog/BlogDetail/@item.ArticleId" class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Sitede Gör"><i class="bi bi-eye"></i></a>
+
+                            <!-- Author -->
+                            <td class="text-dark">
+                                <i class="bi bi-person-circle me-1 text-secondary"></i>
+                                @item.AppUser.Name @item.AppUser.Surname
                             </td>
+
+                            <!-- Date -->
+                            <td class="text-muted small">
+                                <i class="bi bi-calendar-event me-1"></i>
+                                @item.CreatedDate.ToString("dd MMM yyyy")
+                            </td>
+
+                            <!-- Actions -->
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-2 flex-wrap">
+
+                                    <a href="/Blog/BlogDetail/@item.ArticleId"
+                                       target="_blank"
+                                       class="btn btn-sm btn-outline-primary rounded-pill px-3 shadow-sm">
+                                        <i class="bi bi-eye-fill me-1"></i> Gör
+                                    </a>
+
+                                    <a href="/Article/UpdateArticle/@item.ArticleId"
+                                       class="btn btn-sm btn-outline-warning rounded-pill px-3 shadow-sm">
+                                        <i class="bi bi-pencil-square me-1"></i> Düzenle
+                                    </a>
+
+                                    <a href="/Article/DeleteArticle/@item.ArticleId"
+                                       class="btn btn-sm btn-outline-danger rounded-pill px-3 shadow-sm">
+                                        <i class="bi bi-trash-fill me-1"></i> Sil
+                                    </a>
+
+                                </div>
+                            </td>
+
                         </tr>
                     }
-
                 </tbody>
             </table>
-            <a href="/Article/CreateArticle" class="btn btn-outline-info">Yeni Makale Girişi</a>
-            <a href="/Article/CreateArticleWithOpenAI" class="btn btn-outline-warning">Yapay Zeka Makale Oluşturucu</a>
         </div>
+
+        <!-- CTA -->
+        <div class="mt-4 d-flex gap-2 flex-wrap">
+            <a href="/Article/CreateArticle/"
+               class="btn btn-lg btn-primary rounded-pill shadow px-4">
+                <i class="bi bi-plus-circle me-1"></i> Yeni Makale
+            </a>
+
+            <a href="/Article/CreateArticleWithOpenAI/"
+               class="btn btn-lg btn-outline-info rounded-pill shadow px-4">
+                <i class="bi bi-robot me-1"></i> Yapay Zeka ile Makale Oluştur
+            </a>
+        </div>
+
     </div>
 </div>
+
+<style>
+    .table-row-hover:hover {
+        background-color: #f8f9fa;
+        transition: .2s;
+    }
+</style>

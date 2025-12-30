@@ -1,28 +1,104 @@
 ﻿@model List<Slider>
+
 @{
     ViewData["Title"] = "SliderList";
     Layout = "~/Views/AdminLayout/Index.cshtml";
     int count = 0;
 }
 
-<div class="card">
-    <div class="card-body">
-        <div class="d-flex align-items-center">
-            <h5 class="mb-0">Slider Alanı Veri Litesi</h5>
-            <form class="ms-auto position-relative">
-                <div class="position-absolute top-50 translate-middle-y search-icon px-3"><i class="bi bi-search"></i></div>
-                <input class="form-control ps-5" type="text" placeholder="search">
-            </form>
+<style>
+    /* Tablo satır efekti */
+    .table-hover tbody tr:hover {
+        background-color: #f8f9fa;
+        transition: all 0.2s;
+    }
+
+    /* Slider önizleme kutusu (İkon veya Resim için) */
+    .slider-preview-box {
+        width: 60px;
+        height: 40px;
+        background-color: #e9ecef;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6c757d;
+        font-size: 1.2rem;
+        border: 1px solid #dee2e6;
+    }
+
+    /* Aksiyon butonları */
+    .action-btn {
+        width: 35px;
+        height: 35px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        transition: all 0.2s;
+        border: 1px solid transparent;
+        background-color: #fff;
+        border: 1px solid #e9ecef;
+    }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .action-btn.btn-edit:hover {
+            color: #fd7e14;
+            background-color: #fff4e6;
+            border-color: #fd7e14;
+        }
+
+        .action-btn.btn-delete:hover {
+            color: #dc3545;
+            background-color: #ffeef0;
+            border-color: #dc3545;
+            .action-btn.btn-delete
+
+    {
+        color: #dc3545; /* Bootstrap danger rengi */
+        border-color: #e9ecef; /* Mevcut kenarlık rengi */
+    }
+        }
+</style>
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="mb-1 fw-bold text-dark">Slider Yönetimi</h4>
+            <p class="text-muted mb-0">Ana sayfa slayt alanındaki görselleri ve metinleri buradan yönetin.</p>
         </div>
-        <div class="table-responsive mt-3">
-            <table class="table align-middle">
-                <thead class="table-secondary">
+        <a href="/Slider/CreateSlider" class="btn btn-primary btn-sm px-4 shadow-sm py-2 rounded-3">
+            <i class="bi bi-plus-lg me-2"></i>Yeni Slider Ekle
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm mb-4 rounded-4">
+        <div class="card-body p-3">
+            <div class="row g-3 align-items-center">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0 rounded-start-3 ps-3"><i class="bi bi-search text-muted"></i></span>
+                        <input type="text" class="form-control bg-light border-start-0 rounded-end-3" placeholder="Başlık veya içeriğe göre ara...">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light">
                     <tr>
-                        <th>#</th>
-                        <th>Başlık</th>
-                        <th>Açıklama</th>
-                        <th>Güncelle</th>
-                        <th>Sil</th>
+                        <th class="ps-4 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 5%">#</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 10%">Önizleme</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 25%">Başlık</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 40%">Açıklama</th>
+                        <th class="text-end pe-4 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 20%">İşlemler</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,21 +106,56 @@
                     {
                         count++;
                         <tr>
-                            <td>@count</td>
-                            <td>@item.Title</td>
-                            <td>@item.Description</td>
+                            <td class="ps-4 fw-bold text-secondary">@count</td>
+
                             <td>
-                                <a href="/Slider/UpdateSlider/@item.SliderId" class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Düzenle"><i class="bi bi-pencil-fill"></i></a>
+                                <div class="slider-preview-box">
+                                    <i class="bi bi-images"></i>
+                                </div>
                             </td>
+
                             <td>
-                                <a href="/Slider/DeleteSlider/@item.SliderId" class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Sil"><i class="bi bi-trash-fill"></i></a>
+                                <h6 class="mb-0 text-dark fw-semibold text-sm">@item.Title</h6>
+                                <small class="text-muted" style="font-size: 11px;">ID: @item.SliderId</small>
+                            </td>
+
+                            <td>
+                                <span class="text-secondary text-sm">
+                                    @if (!string.IsNullOrEmpty(item.Description) && item.Description.Length > 70)
+                                    {
+                                        @item.Description.Substring(0, 70)
+                                
+                                        <span class="text-muted">...</span>
+                                    }
+                                    else
+                                    {
+                                        @item.Description
+                                    }
+                                </span>
+                            </td>
+
+                            <td class="text-end pe-4">
+                                <div class="d-flex justify-content-end gap-2">
+                                    <a href="/Slider/UpdateSlider/@item.SliderId" class="action-btn btn-edit" data-bs-toggle="tooltip" title="Düzenle">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                    <a href="/Slider/DeleteSlider/@item.SliderId" class="action-btn btn-delete" onclick="return confirm('Bu slaytı silmek istediğinize emin misiniz?')" data-bs-toggle="tooltip" title="Sil">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                     }
-
                 </tbody>
             </table>
-            <a href="/Slider/CreateSlider" class="btn btn-info">Yeni Slider Girişi</a>
         </div>
+
+        @if (Model.Count == 0)
+        {
+            <div class="text-center py-5">
+                <i class="bi bi-images text-muted display-4"></i>
+                <p class="mt-3 text-muted">Henüz eklenmiş bir slider görseli yok.</p>
+            </div>
+        }
     </div>
 </div>

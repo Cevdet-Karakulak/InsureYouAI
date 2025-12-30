@@ -71,7 +71,6 @@
 </div>
 
 <script>
-    // Resim seçilince önizleme göster ve butonu aktifleştir
     function previewImage(event) {
         var input = event.target;
         var preview = document.getElementById('preview-img');
@@ -88,7 +87,6 @@
         }
     }
 
-    // Form gönderilirken loading efekti
     document.getElementById('analysisForm').onsubmit = function () {
         document.getElementById('btnText').classList.add('d-none');
         document.getElementById('btnSpinner').classList.remove('d-none');

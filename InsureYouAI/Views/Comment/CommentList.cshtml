@@ -3,56 +3,178 @@
 @{
     ViewData["Title"] = "CommentList";
     Layout = "~/Views/AdminLayout/Index.cshtml";
+    int count = 0;
 }
 
-<div class="card">
-    <div class="card-body">
-        <div class="d-flex align-items-center">
-            <h5 class="mb-0">Sigorta Makaleleri Kullanıcı Yorumları</h5>
-            <form class="ms-auto position-relative">
-                <div class="position-absolute top-50 translate-middle-y search-icon px-3"><i class="bi bi-search"></i></div>
-                <input class="form-control ps-5" type="text" placeholder="search">
-            </form>
+<style>
+    /* Tablo satırına hover efekti */
+    .table-hover tbody tr:hover {
+        background-color: #f8f9fa;
+        transition: all 0.2s;
+    }
+
+    .action-btn {
+        width: 32px;
+        height: 32px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        transition: 0.2s;
+        border: 1px solid transparent;
+    }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+    .status-badge {
+        font-size: 0.75rem;
+        padding: 0.35em 0.8em;
+        border-radius: 50rem;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+        white-space: nowrap; /* Rozetin tek satır kalmasını sağlar */
+    }
+</style>
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="mb-1 fw-bold text-dark">Yorum Yönetimi</h4>
+            <p class="text-muted mb-0">Sigorta makalelerine gelen kullanıcı yorumlarını buradan yönetebilirsiniz.</p>
         </div>
-        <div class="table-responsive mt-3">
-            <table class="table align-middle">
-                <thead class="table-secondary">
+        <a href="/Comment/CreateComment/" class="btn btn-primary btn-sm px-4 shadow-sm">
+            <i class="bi bi-plus-lg me-2"></i>Yeni Yorum
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-3">
+            <div class="row g-3 align-items-center">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted"></i></span>
+                        <input type="text" class="form-control bg-light border-start-0" placeholder="Yorumlarda veya yazar adında ara...">
+                    </div>
+                </div>
+                <div class="col-md-8 text-end">
+                    <button class="btn btn-outline-secondary btn-sm me-2"><i class="bi bi-filter"></i> Filtrele</button>
+                    <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-download"></i> Dışa Aktar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light">
                     <tr>
-                        <th>#</th>
-                        <th>Ad Soyad</th>
-                        <th>Makale</th>
-                        <th>Tarih</th>
-                        <th>Durum</th>
-                        <th>Onayla</th>
-                        <th>Yorumu Kaldır</th>
-                        <th>Onay Bekliyor</th>
-                        <th>Sil</th>
+                        <th class="ps-4 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 5%">ID</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 20%">Yazar</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 25%">Makale</th>
+
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 15%">Tarih</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 15%">Durum</th>
+                        <th class="text-end pe-4 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 20%">İşlemler</th>
                     </tr>
                 </thead>
                 <tbody>
-
                     @foreach (var item in Model)
                     {
+                        // --- DURUM MANTIĞI (GÜNCELLENDİ) ---
+                        string statusClass = "bg-warning bg-opacity-10 text-warning";
+                        string statusText = "Onay Bekliyor";
+
+                        // Not: CommentStatus veritabanında 'bool' ise (true/false) kullanılır.
+                        // Eğer 'string' ise (item.CommentStatus == "True") şeklinde kullanın.
+                        if (item.CommentStatus == "Yorum Onaylandı")
+                        {
+                            statusClass = "bg-success bg-opacity-10 text-success";
+                            statusText = "Yorum Onaylandı";
+                        }
+                        else
+                        {
+                            // Onaylı değilse kontrol edelim: Toksik mi Beklemede mi?
+                            // Örnek: İçerisinde "aptal", "kötü" vs geçenleri Toksik sayalım.
+                            // Gerçek projede veritabanında 'IsToxic' gibi bir alan olabilir.
+                            if (item.CommentStatus == "Toksik Yorum")
+                            {
+                                statusClass = "bg-danger bg-opacity-10 text-danger";
+                                statusText = "Toksik Yorum";
+                            }
+                            else
+                            {
+                                statusClass = "bg-warning bg-opacity-10 text-warning";
+                                statusText = "Onay Bekliyor";
+                            }
+                        }
+                        count++;
                         <tr>
-                            <td>@item.CommentId</td>
-                            <td>@item.AppUser.Name @item.AppUser.Surname</td>
-                            <td>@item.Article.Title</td>
-                            <td>@item.CommentDate.ToString("dd-MMM-yyyy")</td>
-                            <td>Durum</td>
-                            <td>  <a href="/Default/Index/" class="text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Onayla"><i class="bi bi-eye-fill"></i></a></td>
-                            <td>  <a href="/Comment/UpdateComment/@item.CommentId" class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Yorumu Kaldır"><i class="bi bi-pencil-fill"></i></a></td>
-                            <td> <a href="/Comment/DeleteComment/@item.CommentId" class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Onay Bekliyor"><i class="bi bi-trash-fill"></i></a></td>
-                            <td>    <a href="/Comment/DeleteComment/@item.CommentId" class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Sil"><i class="bi bi-trash-fill"></i></a></td>
+                            <td class="ps-4 fw-bold text-secondary">#@count</td>
 
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <h6 class="mb-0 text-sm fw-bold text-dark">@item.AppUser.Name @item.AppUser.Surname</h6>
+                                </div>
+                            </td>
 
+                            <td>
+                                <div class="d-flex align-items-center text-muted">
+                                    <i class="bi bi-file-text me-2"></i>
+                                    <span class="text-sm">
+                                        @(item.Article.Title.Length > 35 ? item.Article.Title.Substring(0, 35) + "..." : item.Article.Title)
+                                    </span>
+                                </div>
+                            </td>
 
+                            <td>
+                                <div class="d-flex flex-column">
+                                    <span class="text-dark fw-bold text-sm">@item.CommentDate.ToString("dd MMM yyyy")</span>
+                                    <small class="text-muted" style="font-size:11px;">@item.CommentDate.ToString("HH:mm")</small>
+                                </div>
+                            </td>
+
+                            <td>
+                                <span class="badge @statusClass status-badge">
+                                    <i class="bi bi-circle-fill me-1" style="font-size: 6px;"></i> @statusText
+                                </span>
+                            </td>
+
+                            <td class="text-end pe-4">
+                                <div class="btn-group" role="group">
+                                    <a href="/Default/Index/" class="btn btn-light btn-sm action-btn text-success" title="Onayla">
+                                        <i class="bi bi-check-lg"></i>
+                                    </a>
+                                    <a href="/Comment/UpdateComment/@item.CommentId" class="btn btn-light btn-sm action-btn text-primary" title="Düzenle">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a href="/Comment/DeleteComment/@item.CommentId" class="btn btn-light btn-sm action-btn text-warning" title="Gizle">
+                                        <i class="bi bi-eye-slash"></i>
+                                    </a>
+                                    <a href="/Comment/DeleteComment/@item.CommentId" class="btn btn-light btn-sm action-btn text-danger" onclick="return confirm('Silmek istediğinize emin misiniz?')" title="Sil">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
                         </tr>
                     }
-
-
                 </tbody>
             </table>
-            <a href="/Comment/CreateComment/" class="btn btn-info">Yeni Yorum Girişi</a>
+        </div>
+
+        <div class="card-footer bg-white border-0 py-3">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end mb-0 pagination-sm">
+                    <li class="page-item disabled"><a class="page-link" href="#">Önceki</a></li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Sonraki</a></li>
+                </ul>
+            </nav>
         </div>
     </div>
 </div>
