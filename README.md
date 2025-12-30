@@ -1,5 +1,5 @@
-# 🤖 InsureYouAI  
-### **Çoklu Yapay Zekâ Entegrasyonlu Sigorta Platformu (AI-Powered Insurance Platform) (ASP.NET Core + MSSQL + Multi-AI + SignalR + PDF + Vision + NLP + Email Automation)**
+# 🤖 InsureYouAI  (AI-Powered Insurance Platform)
+### **Çoklu Yapay Zekâ Entegrasyonlu Sigorta Platformu  (ASP.NET Core + MSSQL + Multi-AI + SignalR + PDF + Vision + NLP + Email Automation)**
 
 <p align="center">
   <img src="https://img.shields.io/badge/ASP.NET%20Core-512BD4?style=for-the-badge&logo=dotnet&logoColor=white" />
