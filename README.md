@@ -1,5 +1,5 @@
 # 🤖 InsureYouAI  
-### **AI-Powered Insurance Platform (ASP.NET Core + MSSQL + Multi-AI + SignalR + PDF + Vision + NLP + Email Automation)**
+### **Çoklu Yapay Zekâ Entegrasyonlu Sigorta Platformu (AI-Powered Insurance Platform) (ASP.NET Core + MSSQL + Multi-AI + SignalR + PDF + Vision + NLP + Email Automation)**
 
 <p align="center">
   <img src="https://img.shields.io/badge/ASP.NET%20Core-512BD4?style=for-the-badge&logo=dotnet&logoColor=white" />
@@ -33,7 +33,6 @@ Klasik CRUD yaklaşımının ötesine geçerek; **AI ile içerik üretimi**, **A
 - [Yapılandırma](#-yapılandırma)
 - [Ekran Görüntüleri](#-ekran-görüntüleri)
 - [Geliştirici](#-geliştirici)
-- [Lisans](#-lisans)
 
 ---
 
@@ -142,11 +141,12 @@ Aşağıdaki modüller projede aktif olarak bulunmaktadır (Controller bazında)
 ### 📰 Makale ve İçerik Yönetimi (OpenAI)
 
 ![ArticleList](https://raw.githubusercontent.com/Cevdet-Karakulak/InsureYouAI/master/InsureYouAI/wwwroot/SS/article.png)
-![ArticleDetail](https://raw.githubusercontent.com/Cevdet-Karakulak/InsureYouAI/master/InsureYouAI/wwwroot/SS/articledetail.png)
 ![CreateArticleWithOpenAI](https://raw.githubusercontent.com/Cevdet-Karakulak/InsureYouAI/master/InsureYouAI/wwwroot/SS/CreateArticleWithOpenAI.png)
 
-![ArticleUI](https://raw.githubusercontent.com/Cevdet-Karakulak/InsureYouAI/master/InsureYouAI/wwwroot/SS/articleUI.png)
+![ArticleUI](https://raw.githubusercontent.com/Cevdet-Karakulak/InsureYouAI/master/InsureYouAI/wwwroot/SS/aticleUI.png)
 ![ArticleUI1](https://raw.githubusercontent.com/Cevdet-Karakulak/InsureYouAI/master/InsureYouAI/wwwroot/SS/articleUI1.png)
+![ArticleDetail](https://raw.githubusercontent.com/Cevdet-Karakulak/InsureYouAI/master/InsureYouAI/wwwroot/SS/articledetail.png)
+
 
 ---
 
@@ -160,7 +160,7 @@ Aşağıdaki modüller projede aktif olarak bulunmaktadır (Controller bazında)
 
 ---
 
-### 💬 Gerçek Zamanlı Yapay Zekâ Sohbeti (SignalR)
+### 💬 Gerçek Zamanlı Yapay Zekâ Sohbeti 
 
 ![Chatbot](https://raw.githubusercontent.com/Cevdet-Karakulak/InsureYouAI/master/InsureYouAI/wwwroot/SS/chatbot.png)
 
@@ -168,9 +168,9 @@ Aşağıdaki modüller projede aktif olarak bulunmaktadır (Controller bazında)
 
 ### 📨 Gemini – Otomatik Yanıt ve E-Posta Akışı
 
+![SendMessage1](https://raw.githubusercontent.com/Cevdet-Karakulak/InsureYouAI/master/InsureYouAI/wwwroot/SS/SendMessage1.png)
 ![MessageList](https://raw.githubusercontent.com/Cevdet-Karakulak/InsureYouAI/master/InsureYouAI/wwwroot/SS/messagelist.png)
 ![SendMessage](https://raw.githubusercontent.com/Cevdet-Karakulak/InsureYouAI/master/InsureYouAI/wwwroot/SS/SendMessage.png)
-![SendMessage1](https://raw.githubusercontent.com/Cevdet-Karakulak/InsureYouAI/master/InsureYouAI/wwwroot/SS/SendMessage1.png)
 
 ---
 
@@ -195,7 +195,7 @@ Aşağıdaki modüller projede aktif olarak bulunmaktadır (Controller bazında)
 ### 🧾 Yapay Zekâ Destekli Sigorta Paket Önerisi
 
 ![CreateUserCustomizePlan](https://raw.githubusercontent.com/Cevdet-Karakulak/InsureYouAI/master/InsureYouAI/wwwroot/SS/CreateUserCustomizePlanAI.png)
-![CreateUserCustomizePlan1](https://raw.githubusercontent.com/Cevdet-Karakulak/InsureYouAI/master/InsureYouAI/wwwroot/SS/CreateUserCustomizePlanAI1.png)
+![CreateUserCustomizePlan1](https://raw.githubusercontent.com/Cevdet-Karakulak/InsureYouAI/master/InsureYouAI/wwwroot/SS/CreateUserCustomizePlanAI.png1.png)
 
 ---
 
@@ -225,13 +225,15 @@ Aşağıdaki modüller projede aktif olarak bulunmaktadır (Controller bazında)
 
 ![Contact](https://raw.githubusercontent.com/Cevdet-Karakulak/InsureYouAI/master/InsureYouAI/wwwroot/SS/Contact.png)
 ![Pricing](https://raw.githubusercontent.com/Cevdet-Karakulak/InsureYouAI/master/InsureYouAI/wwwroot/SS/pricingplan.png)
+![Slider](https://raw.githubusercontent.com/Cevdet-Karakulak/InsureYouAI/master/InsureYouAI/wwwroot/SS/slider.png)
+![Testimonial](https://raw.githubusercontent.com/Cevdet-Karakulak/InsureYouAI/master/InsureYouAI/wwwroot/SS/testimonial.png)
 ![Category](https://raw.githubusercontent.com/Cevdet-Karakulak/InsureYouAI/master/InsureYouAI/wwwroot/SS/category.png)
 
 ---
 
 ### 🎨 OpenAI Görsel Üretimi ve Galeri
 
-![AllImage](https://raw.githubusercontent.com/Cevdet-Karakulak/InsureYouAI/master/InsureYouAI/wwwroot/SS/AllImage.png)
+![AllImage](https://raw.githubusercontent.com/Cevdet-Karakulak/InsureYouAI/master/InsureYouAI/wwwroot/SS/AIImage.png)
 
 ---
 
@@ -248,11 +250,10 @@ Aşağıdaki modüller projede aktif olarak bulunmaktadır (Controller bazında)
 
 ---
 
-### 🚫 Hata ve Yardımcı Sayfalar
+### 🚫 Hata Sayfası
 
 ![404](https://raw.githubusercontent.com/Cevdet-Karakulak/InsureYouAI/master/InsureYouAI/wwwroot/SS/404.png)
-![Slider](https://raw.githubusercontent.com/Cevdet-Karakulak/InsureYouAI/master/InsureYouAI/wwwroot/SS/slider.png)
-![Testimonial](https://raw.githubusercontent.com/Cevdet-Karakulak/InsureYouAI/master/InsureYouAI/wwwroot/SS/testimonial.png)
+
 
 ---
 
