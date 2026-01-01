@@ -13,7 +13,6 @@ namespace InsureYouAINew.Controllers
         public DamageAssessmentController(IHttpClientFactory httpClientFactory, IConfiguration configuration)
         {
             _httpClientFactory = httpClientFactory;
-            // Mevcut Claude anahtarını kullanıyoruz
             _claudeApiKey = configuration["ClaudeAI:ApiKey"];
         }
 
@@ -37,7 +36,6 @@ namespace InsureYouAINew.Controllers
                 return View("Index");
             }
 
-            // Sadece görsel dosyalarına izin ver
             if (!imageFile.ContentType.StartsWith("image/"))
             {
                 ViewBag.Error = "Lütfen geçerli bir resim dosyası (JPEG, PNG vb.) yükleyin.";
@@ -46,14 +44,11 @@ namespace InsureYouAINew.Controllers
 
             try
             {
-                // 1. Görseli Base64 formatına çevir
                 string base64Image = await ConvertFileToBase64Async(imageFile);
                 string mediaType = imageFile.ContentType;
 
-                // 2. Claude Vision API'ye gönder ve sonucu al
                 string analysisResult = await CallClaudeVisionApi(base64Image, mediaType);
 
-                // Görseli ekranda göstermek için View'a geri gönderiyoruz
                 ViewBag.ImageBase64 = $"data:{mediaType};base64,{base64Image}";
                 ViewBag.AnalysisResult = analysisResult;
             }
@@ -65,7 +60,6 @@ namespace InsureYouAINew.Controllers
             return View("Index");
         }
 
-        // Yardımcı Metot: Dosyayı Base64 string'e çevirir
         private async Task<string> ConvertFileToBase64Async(IFormFile file)
         {
             using var ms = new MemoryStream();
@@ -74,7 +68,6 @@ namespace InsureYouAINew.Controllers
             return Convert.ToBase64String(fileBytes);
         }
 
-        // Ana Metot: Claude Vision API Çağrısı
         private async Task<string> CallClaudeVisionApi(string base64Image, string mediaType)
         {
             var client = _httpClientFactory.CreateClient();
@@ -83,7 +76,6 @@ namespace InsureYouAINew.Controllers
             request.Headers.Add("x-api-key", _claudeApiKey);
             request.Headers.Add("anthropic-version", "2023-06-01");
 
-            // Sigorta eksperi gibi düşünmesi için özel prompt
             var promptText = @"
 Sen uzman bir sigorta eksperisin. Görevin bu fotoğraftaki hasarı analiz etmek.
 Lütfen aşağıdaki formatta, Türkçe bir rapor hazırla:
@@ -97,10 +89,9 @@ Lütfen aşağıdaki formatta, Türkçe bir rapor hazırla:
 Yanıtı sadece bu başlıklar altında maddeler halinde ver.
 ";
 
-            // Claude Vision API için özel body yapısı
             var requestBody = new
             {
-                model = "claude-3-7-sonnet-20250219", // Hata veren eski ismi bununla değiştirdik
+                model = "claude-3-7-sonnet-20250219", 
                 max_tokens = 2048,
                 temperature = 0.2,
                 messages = new[]
