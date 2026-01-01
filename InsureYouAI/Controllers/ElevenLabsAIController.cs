@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Text;
-using Microsoft.Extensions.Configuration; // IConfiguration için gerekli
+using Microsoft.Extensions.Configuration; 
 
 namespace InsureYouAINew.Controllers
 {
@@ -9,11 +9,9 @@ namespace InsureYouAINew.Controllers
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly string _elevenLabsKey;
 
-        // Constructor üzerinden IConfiguration ve IHttpClientFactory enjekte edildi
         public ElevenLabsAIController(IHttpClientFactory httpClientFactory, IConfiguration configuration)
         {
             _httpClientFactory = httpClientFactory;
-            // secrets.json içindeki ElevenLabs:ApiKey değerini okur
             _elevenLabsKey = configuration["ElevenLabs:ApiKey"];
         }
 
@@ -41,7 +39,7 @@ namespace InsureYouAINew.Controllers
             var url = $"https://api.elevenlabs.io/v1/text-to-speech/{voiceId}/stream";
 
             var client = _httpClientFactory.CreateClient();
-            client.DefaultRequestHeaders.Add("xi-api-key", _elevenLabsKey); // Config'den gelen anahtar
+            client.DefaultRequestHeaders.Add("xi-api-key", _elevenLabsKey); 
 
             var requestBody = new
             {
@@ -89,7 +87,7 @@ namespace InsureYouAINew.Controllers
             var url = $"https://api.elevenlabs.io/v1/text-to-speech/{voiceId}/stream";
 
             var client = _httpClientFactory.CreateClient();
-            client.DefaultRequestHeaders.Add("xi-api-key", _elevenLabsKey); // Config'den gelen anahtar
+            client.DefaultRequestHeaders.Add("xi-api-key", _elevenLabsKey); 
 
             var requestBody = new
             {
