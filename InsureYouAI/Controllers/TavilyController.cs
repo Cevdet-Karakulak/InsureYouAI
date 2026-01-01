@@ -11,12 +11,9 @@ namespace InsureYouAINew.Controllers
         private readonly string _tavilyApiKey;
         private readonly string _openAIApiKey;
 
-        // IConfiguration ile tüm anahtarları merkezi olarak yönetiyoruz
         public TavilyController(IHttpClientFactory httpClientFactory, IConfiguration configuration)
         {
             _httpClientFactory = httpClientFactory;
-
-            // secrets.json hiyerarşisine uygun eşleştirmeler
             _tavilyApiKey = configuration["Tavily:ApiKey"];
             _openAIApiKey = configuration["OpenAI:ApiKey"];
         }
@@ -43,10 +40,8 @@ namespace InsureYouAINew.Controllers
 
             try
             {
-                // 1) Tavily web araması
                 var tavilyResponse = await CallTavilyAsync(query);
 
-                // 2) OpenAI ile sonuçların analiz edilmesi
                 var openAIResponse = await SummarizeWithOpenAI(query, tavilyResponse);
 
                 ViewBag.Query = query;
