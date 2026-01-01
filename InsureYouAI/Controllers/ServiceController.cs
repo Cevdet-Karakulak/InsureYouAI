@@ -1,8 +1,7 @@
-﻿using InsureYouAI.Context;
+using InsureYouAI.Context;
 using InsureYouAI.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Text.Json;
 
 namespace InsureYouAI.Controllers
@@ -10,10 +9,13 @@ namespace InsureYouAI.Controllers
     public class ServiceController : Controller
     {
         private readonly InsureContext _context;
-        public ServiceController(InsureContext context)
+        private readonly IConfiguration _configuration; 
+        public ServiceController(InsureContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
+
         public IActionResult ServiceList()
         {
             var values = _context.Services.ToList();
@@ -52,14 +54,23 @@ namespace InsureYouAI.Controllers
         public IActionResult DeleteService(int id)
         {
             var value = _context.Services.Find(id);
-            _context.Services.Remove(value);
-            _context.SaveChanges();
+            if (value != null)
+            {
+                _context.Services.Remove(value);
+                _context.SaveChanges();
+            }
             return RedirectToAction("ServiceList");
         }
 
         public async Task<IActionResult> CreateServiceWithAnthropicClaude()
         {
-            string apiKey = "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";
+            string apiKey = _configuration["Anthropic:ApiKey"];
+
+            if (string.IsNullOrEmpty(apiKey))
+            {
+                ViewBag.services = new List<string> { "API Anahtarı bulunamadı. Lütfen yapılandırmayı kontrol edin." };
+                return View();
+            }
 
             string prompt = "Bir sigorta şirketi için hizmetler bölümü hazırlamanı istiyorum. Burada 5 farklı hizmet olmalı. Bana maksimum 100 karakterden oluşan cümlelerle 5 tane hizmet içeriği yazar mısın?";
 
@@ -84,14 +95,15 @@ namespace InsureYouAI.Controllers
                 }
             };
 
-            var jsonContent = new StringContent(JsonSerializer.Serialize(requestBody));
+            var jsonContent = new StringContent(JsonSerializer.Serialize(requestBody), System.Text.Encoding.UTF8, "application/json"); // Encoding eklendi
             var response = await client.PostAsync("v1/messages", jsonContent);
 
             if (!response.IsSuccessStatusCode)
             {
+                var errorContent = await response.Content.ReadAsStringAsync();
                 ViewBag.services = new List<string>
                 {
-                    $"Claude Api'den Cevap Alınamadı. Hata: {response.StatusCode}"
+                    $"Claude Api'den Cevap Alınamadı. Durum Kodu: {response.StatusCode}. Detay: {errorContent}"
                 };
                 return View();
             }
@@ -105,9 +117,9 @@ namespace InsureYouAI.Controllers
                             .GetString();
 
             var services = fullText.Split('\n')
-                                 .Where(x => !string.IsNullOrEmpty(x))
-                                 .Select(x => x.TrimStart('1', '2', '3', '4', '5', '.', ' '))
-                                 .ToList();
+                                     .Where(x => !string.IsNullOrEmpty(x))
+                                     .Select(x => x.TrimStart('1', '2', '3', '4', '5', '.', ' ', '-')) 
+                                     .ToList();
             ViewBag.services = services;
 
             return View();
