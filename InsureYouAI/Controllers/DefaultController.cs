@@ -35,20 +35,16 @@ namespace InsureYouAI.Controllers
         [HttpPost]
         public async Task<IActionResult> SendMessage(Message message)
         {
-            // Temel bilgiler
             message.SendDate = DateTime.Now;
             message.IsRead = false;
 
-            // AI sınıflandırma
             message.AiCategory = await _aiService.DetectCategoryAsync(message.MessagetDetail);
             message.Priority = await _aiService.DetectPriorityAsync(message.MessagetDetail);
 
             _context.Messages.Add(message);
             _context.SaveChanges();
 
-            // ---------------------------------------------------
-            //  G E M I N I   A I   -   M Ü Ş T E R İ   Y A N I T I
-            // ---------------------------------------------------
+            
             string apiKey = _configuration["GeminiAI:ApiKey"];
             string model = "gemini-2.5-flash-latest";
 
@@ -104,7 +100,6 @@ Kategori: {message.AiCategory}
                     .GetProperty("text")
                     .GetString();
 
-                // JSON’ı parse et
                 var clean = aiText.Replace("\n", " ").Trim();
                 var parsed = JsonNode.Parse(clean);
 
@@ -113,13 +108,9 @@ Kategori: {message.AiCategory}
             }
             catch
             {
-                // Hata olsa bile mail göndersin
                 textBody = "Talebiniz alınmıştır. En kısa zamanda dönüş yapılacaktır.";
             }
 
-            // ---------------------------------------------------
-            //  M A İ L   G Ö N D E R
-            // ---------------------------------------------------
             try
             {
                 var mail = new MimeMessage();
@@ -136,12 +127,10 @@ Kategori: {message.AiCategory}
             }
             catch
             {
-                // email hatası sistemi bozmasın
+            
             }
 
-            // ---------------------------------------------------
-            //  DB LOG KAYDI
-            // ---------------------------------------------------
+            
             _context.ClaudeAIMessages.Add(new ClaudeAIMessage
             {
                 MessageDetail = textBody,
