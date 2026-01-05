@@ -1,19 +1,6 @@
 # 🤖 InsureYouAI  (AI-Powered Insurance Platform)
 ### **Çoklu Yapay Zekâ Entegrasyonlu Sigorta Platformu  (ASP.NET Core + MSSQL + Multi-AI + SignalR + PDF + Vision + NLP + Email Automation)**
 
-<p align="center">
-  <img src="https://img.shields.io/badge/ASP.NET%20Core-512BD4?style=for-the-badge&logo=dotnet&logoColor=white" />
-  <img src="https://img.shields.io/badge/MSSQL-CC2927?style=for-the-badge&logo=microsoftsqlserver&logoColor=white" />
-  <img src="https://img.shields.io/badge/EF%20Core-Code%20First-5C2D91?style=for-the-badge&logo=dotnet&logoColor=white" />
-  <img src="https://img.shields.io/badge/SignalR-Real--Time-1E90FF?style=for-the-badge&logo=microsoft&logoColor=white" />
-  <img src="https://img.shields.io/badge/OpenAI-gpt--4.1--mini%20%7C%20gpt--image--1-111111?style=for-the-badge&logo=openai&logoColor=white" />
-  <img src="https://img.shields.io/badge/Anthropic-Claude%203.7%20Sonnet-101010?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Google%20Gemini-gemini--2.5--flash-4285F4?style=for-the-badge&logo=google&logoColor=white" />
-  <img src="https://img.shields.io/badge/Tavily-Web%20Search-2E7D32?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/ElevenLabs-Text--to--Speech-FF6B6B?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/PdfPig-PDF%20Parsing-orange?style=for-the-badge" />
-</p>
-
 ---
 
 ## 🚀 Proje Hakkında
@@ -115,13 +102,13 @@ Aşağıdaki modüller projede aktif olarak bulunmaktadır (Controller bazında)
 <p align="center">
   <img src="https://img.shields.io/badge/ASP.NET%20Core-512BD4?style=for-the-badge&logo=dotnet&logoColor=white" />
   <img src="https://img.shields.io/badge/MSSQL-CC2927?style=for-the-badge&logo=microsoftsqlserver&logoColor=white" />
-  <img src="https://img.shields.io/badge/EF%20Core-Code%20First-5C2D91?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/SignalR-Real--Time-1E90FF?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/OpenAI-Chat%20%26%20Image-111111?style=for-the-badge&logo=openai&logoColor=white" />
-  <img src="https://img.shields.io/badge/Anthropic-Claude%20Messages%20%26%20Vision-101010?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Google%20Gemini-Generative%20Language%20API-4285F4?style=for-the-badge&logo=google&logoColor=white" />
-  <img src="https://img.shields.io/badge/Tavily-Web%20Search%20API-2E7D32?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/ElevenLabs-TTS-FF6B6B?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/EF%20Core-Code%20First-5C2D91?style=for-the-badge&logo=dotnet&logoColor=white" />
+  <img src="https://img.shields.io/badge/SignalR-Real--Time-1E90FF?style=for-the-badge&logo=microsoft&logoColor=white" />
+  <img src="https://img.shields.io/badge/OpenAI-gpt--4.1--mini%20%7C%20gpt--image--1-111111?style=for-the-badge&logo=openai&logoColor=white" />
+  <img src="https://img.shields.io/badge/Anthropic-Claude%203.7%20Sonnet-101010?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Google%20Gemini-gemini--2.5--flash-4285F4?style=for-the-badge&logo=google&logoColor=white" />
+  <img src="https://img.shields.io/badge/Tavily-Web%20Search-2E7D32?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/ElevenLabs-Text--to--Speech-FF6B6B?style=for-the-badge" />
   <img src="https://img.shields.io/badge/PdfPig-PDF%20Parsing-orange?style=for-the-badge" />
 </p>
 
